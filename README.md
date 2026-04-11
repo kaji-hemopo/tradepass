@@ -1,6 +1,6 @@
 # TradePass — README
 
-> Securities licensing study app with SM-2 spaced repetition engine.
+> NZ EWRB Electrical certification study app with SM-2 spaced repetition engine.
 > FastAPI backend (port 8000) + Streamlit frontend (port 8501).
 
 ---
@@ -85,6 +85,22 @@ Streak Freeze tokens protect your streak when you miss a day. When `streak_statu
 ### 📅 Study Plan
 Study calendar with three views: (1) **Activity Calendar** — 4-week heatmap grid showing active days (green ●) vs inactive (grey ○) with a week-by-week breakdown. (2) **Upcoming Reviews** — Plotly bar chart of cards due per day over the next 14 days, with today highlighted in red. (3) **Today's Focus** — per-topic breakdown of cards due today with "Start Review →" buttons that navigate directly to Study Session. Helps users plan their study schedule and see their streak at a glance on a calendar.
 
+### 🔍 Search & Bookmarks
+Search the question bank by keyword, topic, and/or difficulty. Bookmarks let you save favourite questions for later review. The **Saved Questions** tab lists all bookmarked questions with quick access to start a study session with that specific question. Bookmark toggle available on every search result card and on each saved question card.
+
+### 📋 Question History (Weak Zone Drill-Down)
+From the **Topic Trends** page, click **"📋 View Question History →"** next to any topic to open a detailed drill-down panel showing every question you've attempted in that topic. Each row shows: question text (truncated), difficulty badge, attempt count, last result (✅/❌), best score, and ✅/❌ counts. Flag individual questions for exam review using the **☆ Flag for Exam** button (⭐ Unflag to remove). The history combines data from both exam sessions and review sessions, merged per question.
+
+### ⭐ Flag for Exam
+Mark any question for exam prep review (separate from Bookmarks). The **☆ Flag for Exam** toggle appears on question cards in Study Session and Focus Mode. Starred questions can be reviewed before an exam. The flag state persists in the `question_flags` table and survives streak resets.
+
+### 📌 Flagged Questions Review Queue
+The **Flagged Questions** page (sidebar, between Search and Profile) shows all your ⭐-flagged exam-prep questions in one place. Each card shows the topic name, difficulty badge, and full question text. Actions per card:
+- **⭐ Remove Flag** — unflags the question (live update, no page reload needed)
+- **📖 Study This Question →** — opens a dedicated **Solo Study** session focused on just that one question: you see the question, reveal the answer, rate yourself (Knew it / Didn't know), and get instant SM-2 feedback (updated easiness factor + next review interval) inline without starting a full review session. Grading happens via `POST /api/study/solo/{question_id}`.
+
+The list is sorted by most recently flagged. Empty state shown when no questions are flagged yet.
+
 ### 👤 Profile
 Your account info, current/longest streak, daily goal progress bar, and today's question count + accuracy. A **daily goal slider** (1–100 questions/day, step 5) lets you adjust your daily target at any time — save calls `PUT /api/study/streaks/{user_id}/daily-goal`. Use the **"🔄 Reset My Progress"** button to clear all study history and restart as a fresh user — useful for demos.
 
@@ -147,14 +163,14 @@ TradePass/
 
 ## Topics Covered (11)
 
-1. Knowledge of Trade Instruments
-2. Securities Taxation
-3. Market Manipulation
-4. Ethical Conduct
-5. Corporate Actions
-6. Client Suitability
-7. Market Regulation
-8. Asset Segregation
-9. Best Execution
-10. Insider Trading
-11. ADR Operations
+1. Voltage Drop
+2. Fault Loop Impedance
+3. AS/NZS 3000 Application
+4. Insulation Resistance
+5. Maximum Demand
+6. RCD/MCB Protection
+7. Supply Systems
+8. Motors & Motor Starters
+9. Switchboards
+10. Protection & Discrimination
+11. Circuit Design
