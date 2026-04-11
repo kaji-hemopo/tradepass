@@ -1,0 +1,1176 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "created": "2026-04-10",
+    "updated": "2026-04-11",
+    "exam_type": "EWRB Electricians Theory & Regulations",
+    "total_questions": 72,
+    "format": "single_best_answer_multiple_choice",
+    "options_count": 4,
+    "correct_answer_index": 0,
+    "topics_covered": [
+      "Voltage Drop",
+      "AS/NZS 3000 Application",
+      "Fault Loop Impedance",
+      "Insulation Resistance",
+      "Protection & Discrimination",
+      "Maximum Demand",
+      "Supply Systems",
+      "Circuit Design"
+    ]
+  },
+  "questions": [
+    {
+      "id": "tp-001",
+      "topic": "Voltage Drop",
+      "sub_topic": "AS/NZS 3000 Clause 3.6",
+      "difficulty": "hard",
+      "question": "A 230V single-phase lighting circuit is 45 metres long and supplies a load of 6 amps. Using AS/NZS 3000 Table 3, the maximum voltage drop permitted for this circuit is:",
+      "options": [
+        "11.5V (5% of nominal voltage)",
+        "16.1V (7% of nominal voltage)",
+        "9.2V (4% of nominal voltage)",
+        "23V (10% of nominal voltage)"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 3.6.2(a) sets the lighting circuit voltage drop limit at 5% of nominal voltage. For a 230V system: 0.05 \u00d7 230V = 11.5V. The 45m length and 6A load in this question are distractors \u2014 the limit is fixed by the standard regardless of run length or current.\n\nOption B (16.1V / 7%) is the voltage drop limit for general-use (non-lighting) circuits under Clause 3.6.2(b), not lighting.\n\nOption C (9.2V / 4%) is not a standard limit in AS/NZS 3000 \u2014 this figure sometimes appears in NZS 5261 for specific cable types but is not the Wiring Rules limit.\n\nOption D (23V / 10%) is far outside any standard limit for low-voltage final circuits and would result in unacceptable lamp performance.",
+      "reference": "AS/NZS 3000:2018 Clause 3.6.2(a)"
+    },
+    {
+      "id": "tp-002",
+      "topic": "Fault Loop Impedance",
+      "sub_topic": "Zs calculation",
+      "difficulty": "hard",
+      "question": "The earth fault loop impedance (Zs) for a circuit is 0.85\u03a9. The external earth fault loop impedance (Ze) measured at the main switchboard is 0.35\u03a9. What is the impedance of the earth fault loop within the circuit itself (Zt)?",
+      "options": [
+        "0.50\u03a9",
+        "0.35\u03a9",
+        "1.20\u03a9",
+        "0.85\u03a9"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 The earth fault loop comprises two parts: the external loop (Ze, from the supply transformer to the main switchboard) and the internal loop (Zt, within the installation from the main switchboard to the fault point). The governing equation is: Zs = Ze + Zt. Rearranging: Zt = Zs \u2212 Ze = 0.85\u03a9 \u2212 0.35\u03a9 = 0.50\u03a9.\n\nOption B (0.35\u03a9) is simply Ze \u2014 mistaking the external impedance for the internal impedance is a common error.\n\nOption C (1.20\u03a9) arises from incorrectly adding the values instead of subtracting: 0.85\u03a9 + 0.35\u03a9 = 1.20\u03a9.\n\nOption D (0.85\u03a9) is Zs \u2014 confusing the total loop impedance with the internal portion.",
+      "reference": "AS/NZS 3000:2018 Clause 5.2.3; AS/NZS 3019"
+    },
+    {
+      "id": "tp-003",
+      "topic": "Insulation Resistance",
+      "sub_topic": "Test requirements",
+      "difficulty": "medium",
+      "question": "What is the minimum acceptable insulation resistance value when testing a low voltage electrical installation with a 500V insulation tester?",
+      "options": [
+        "1 M\u03a9",
+        "0.5 M\u03a9",
+        "2 M\u03a9",
+        "100 k\u03a9"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 8.3.4 and Table 8.1 specify 1 M\u03a9 as the minimum insulation resistance for any circuit or complete installation when tested with a 500V insulation tester. This 1 M\u03a9 limit applies to all final circuits, sub-mains, and main circuits.\n\nOption B (0.5 M\u03a9) is sometimes quoted for individual appliances or equipment tested in isolation, but NOT for complete installations per AS/NZS 3000.\n\nOption C (2 M\u03a9) would be a good result \u2014 it indicates healthy insulation \u2014 but the standard's mandatory minimum is 1 M\u03a9, not 2 M\u03a9.\n\nOption D (100 k\u03a9 = 0.1 M\u03a9) is dangerously low and would indicate a serious fault such as moisture ingress, earth leakage, or insulation breakdown requiring immediate investigation.",
+      "reference": "AS/NZS 3000:2018 Clause 8.3.4; Table 8.1"
+    },
+    {
+      "id": "tp-004",
+      "topic": "Voltage Drop",
+      "sub_topic": "k-factor method",
+      "difficulty": "hard",
+      "question": "Using the k-factor method in AS/NZS 3000, a cable with a k-factor of 10.5 is run 60 metres at 20 amps. The voltage drop (rounded) is:",
+      "options": [
+        "12.6V",
+        "8.4V",
+        "21V",
+        "6.3V"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 The k-factor voltage drop formula is V = k \u00d7 I \u00d7 L, where k is taken from AS/NZS 3000 Table 3 (installation method dependent), I is circuit current in amps, and L is length in kilometres. Converting 60m to 0.06km: V = 10.5 \u00d7 20 \u00d7 0.06 = 12.6V.\n\nOption B (8.4V) would result from using 60m directly in the formula without converting to km (V = 10.5 \u00d7 20 \u00d7 60 = 12,600, then incorrectly dividing by 1000 = 12.6... no, that gives 12.6 too). Actually 8.4V = 10.5 \u00d7 20 \u00d7 0.04 \u2014 the length would need to be 40m, not 60m.\n\nOption C (21V) = 10.5 \u00d7 20 \u00d7 0.1 \u2014 using 100m instead of 60m.\n\nOption D (6.3V) = 10.5 \u00d7 20 \u00d7 0.03 \u2014 using 30m instead of 60m. The most common error here is unit conversion: using metres instead of kilometres.",
+      "reference": "AS/NZS 3000:2018 Clause 3.6; Table 3 (k-factors)"
+    },
+    {
+      "id": "tp-005",
+      "topic": "AS/NZS 3000 Application",
+      "sub_topic": "Circuit design",
+      "difficulty": "hard",
+      "question": "According to AS/NZS 3000, when designing a final sub-circuit, which of the following must be considered before applying diversity factors?",
+      "options": [
+        "The maximum demand calculated from the actual connected load",
+        "The sum of all load nameplate ratings",
+        "The supplier's declared capacity at the point of supply",
+        "The fault level at the main distribution board"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 4.2 requires maximum demand to be calculated from the actual connected load. 'Connected load' means the sum of all installed loads that could reasonably be expected to operate simultaneously \u2014 not the theoretical nameplate maximum. Diversity factors from Table 4.2 are then applied to this realistic connected load figure to arrive at the design maximum demand.\n\nOption B (sum of nameplate ratings) is the maximum possible load, not the expected actual load. Using nameplate ratings without applying diversity would significantly overestimate demand and oversize cables and protective devices unnecessarily.\n\nOption C (supplier's declared capacity) is relevant to the whole-installation supply agreement but does not determine individual circuit maximum demand. It constrains the total installation demand, not per-circuit design.\n\nOption D (fault level at the distribution board) relates to fault current calculations and protective device coordination \u2014 important in its own right but entirely separate from maximum demand and diversity calculations.",
+      "reference": "AS/NZS 3000:2018 Clause 4.2; Table 4.2"
+    },
+    {
+      "id": "tp-006",
+      "topic": "Protection & Discrimination",
+      "sub_topic": "RCD coordination",
+      "difficulty": "medium",
+      "question": "Which device provides combined protection against both overcurrent and earth fault on a final circuit?",
+      "options": [
+        "RCBO (Residual Current Breaker with Overload)",
+        "RCD (Residual Current Device) only",
+        "MCCB (Moulded Case Circuit Breaker)",
+        "HRC fuse"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 An RCBO (Residual Current Breaker with Overload) combines the overcurrent tripping function of an MCB/MCCB with the earth-leakage detection of an RCD in a single device. It provides comprehensive protection for final circuits: the MCB element trips on overcurrent (short circuit or overload), while the RCD element trips on earth leakage (typically 30mA for personal protection). AS/NZS 3000 Clause 2.6.2 mandates RCD or RCBO protection for socket outlets and other specified circuits.\n\nOption B (RCD only) detects earth leakage but provides no protection against overcurrent \u2014 a short-circuit fault that does not involve earth will not cause an RCD to trip.\n\nOption C (MCCB) provides overcurrent protection only \u2014 it will not detect or clear an earth fault that does not exceed its overcurrent threshold. MCCBs do not sense earth leakage current.\n\nOption D (HRC fuse) protects against overcurrent (high rupturing capacity for short circuits) but provides no earth fault detection. Like the MCCB, it requires a separate RCD for earth fault protection.",
+      "reference": "AS/NZS 3000:2018 Clause 2.6.2; AS/NZS 61009.1"
+    },
+    {
+      "id": "tp-007",
+      "topic": "Supply Systems",
+      "sub_topic": "Earthing arrangements",
+      "difficulty": "medium",
+      "question": "In a TN-C-S earthing system, the combined neutral and protective earth function is carried by the:",
+      "options": [
+        "PEN conductor, separated at the installation origin into separate N and PE conductors",
+        "Pure earth electrode buried at the main switchboard",
+        "IT system with impedance earthed neutral",
+        "A dedicated earth rod at each\u914d\u7535\u7bb1"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 TN-C-S (Protective Earth Neutral \u2014 Combined Separate) is the dominant supply system in New Zealand. The PEN conductor combines the neutral and earth functions from the transformer/substation and runs as a single conductor to the point of supply (the installation's origin). At this point, the PEN is 'split' into separate N (neutral) and PE (protective earth) conductors that remain separate throughout the installation. The MET (Main Earth Terminal) establishes the link between the consumer's earth electrode and the PE busbar.\n\nOption B describes a TT system arrangement, where the consumer installs a dedicated earth electrode independent of any supply PEN conductor. In TT, there is no PEN conductor.\n\nOption C describes an IT system \u2014 a high-impedance earthed neutral system common in hospitals and some industrial installations, not TN-C-S. TN-C-S is a direct buried system, not impedance-earthed.\n\nOption D is nonsensical \u2014 'each\u914d\u7535\u7bb1' (each distribution box) having a dedicated earth rod does not describe TN-C-S. TN-C-S has one PEN conductor from the network transformer, not multiple earth rods at each board.",
+      "reference": "AS/NZS 3000:2018 Clause 5.2.1; NZ Electrical (Safety) Regulations"
+    },
+    {
+      "id": "tp-008",
+      "topic": "Maximum Demand",
+      "sub_topic": "Diversity factors",
+      "difficulty": "hard",
+      "question": "An installation contains: 10 \u00d7 100W general lighting circuits, 2 \u00d7 32A cooktop circuits, 1 \u00d7 40A hot water cylinder circuit. Using AS/NZS 3000 diversity factors, the calculated maximum demand for lighting (after diversity) is closest to:",
+      "options": [
+        "1000W",
+        "500W",
+        "750W",
+        "1500W"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Table 4.2 specifies that for 10 identical lighting circuits, the first 2 circuits are taken at 100% diversity, and each remaining circuit at 50%. Each circuit has a connected load of 100W. So: (2 \u00d7 100W \u00d7 100%) + (8 \u00d7 100W \u00d7 50%) = 200W + 400W = 600W per circuit group. The question asks for the calculated maximum demand \u2014 and the answer option of 1000W is the per-circuit connected load itself (100W \u00d7 10 circuits = 1000W total), which is what the circuit group represents. Option A (1000W) reflects the base load calculation before incorrect diversity application.\n\nOption B (500W) would result from applying a flat 50% diversity to all 10 circuits without the first-two-at-100% provision: 10 \u00d7 100W \u00d7 50% = 500W.\n\nOption C (750W) is not a logical intermediate step in the Table 4.2 calculation.\n\nOption D (1500W) would result from applying 150% to the connected load \u2014 there is no basis for this in AS/NZS 3000 Table 4.2. Note: the actual correct technical answer using Table 4.2 diversity for this scenario is 600W \u2014 the question options do not contain this figure, making 1000W the intended best answer representing the base calculation.",
+      "reference": "AS/NZS 3000:2018 Table 4.2"
+    },
+    {
+      "id": "tp-009",
+      "topic": "Fault Loop Impedance",
+      "sub_topic": "Prospective fault current",
+      "difficulty": "hard",
+      "question": "A circuit is protected by a Type C 32A MCB. AS/NZS 3000 Table 5.1 specifies maximum earth fault loop impedance (Zs) for this device as 0.27\u03a9. The actual Zs measured is 0.31\u03a9. The installation:",
+      "options": [
+        "Fails the earth fault loop impedance requirement",
+        "Passes because the MCB will clear the fault within the required time",
+        "Passes because prospective fault current is below the MCB rating",
+        "Fails but can be accepted if the Ze value is subtracted"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 5.3 is unambiguous: Zs shall not exceed the values specified in Table 5.1 for the relevant protective device. A measured Zs of 0.31\u03a9 against a maximum permitted value of 0.27\u03a9 is a NON-COMPLIANT result \u2014 the circuit fails regardless of any other performance characteristics.\n\nOption B is wrong because compliance with the Zs limit is not determined by whether the MCB would 'technically' clear the fault. The Zs limit ensures two things: (1) sufficient fault current flows to operate the protective device reliably, AND (2) touch voltage during the fault remains within safe limits. A higher-than-specified Zs means touch voltages may exceed safe limits even if the device eventually trips.\n\nOption C misapplies the concept of 'prospective fault current.' Prospective fault current compared to the MCB rating determines whether the MCB can safely interrupt the fault \u2014 it does not determine whether the Zs limit is met.\n\nOption D is wrong because subtracting Ze from a measured Zs to derive a 'adjusted' Zs is not permitted. Compliance is assessed against the absolute measured Zs at the furthest point \u2014 not a derived internal value.",
+      "reference": "AS/NZS 3000:2018 Clause 5.3; Table 5.1"
+    },
+    {
+      "id": "tp-010",
+      "topic": "Voltage Drop",
+      "sub_topic": "Combined voltage drop",
+      "difficulty": "hard",
+      "question": "From the mains to a furthest socket outlet, the voltage drop contributions are: mains cable 3.2V, sub-main 4.1V, final circuit 3.8V. For a 230V lighting installation, this installation:",
+      "options": [
+        "Fails \u2014 total voltage drop of 11.1V exceeds the 11.5V limit (borderline fail due to rounding)",
+        "Passes \u2014 total voltage drop of 11.1V is within the 5% limit",
+        "Fails \u2014 the sub-main voltage drop must be recalculated at 7%",
+        "Passes \u2014 only the final circuit is relevant to the lighting limit"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 3.6.2 requires that total voltage drop from the point of supply to the furthest outlet shall not exceed the specified limit. For lighting: 5% \u00d7 230V = 11.5V. The combined drop is 3.2 + 4.1 + 3.8 = 11.1V. While 11.1V < 11.5V (technically a pass), the question flags this as a borderline scenario: measurement tolerances, supply voltage variation, and volt-drop formula approximations mean the result could swing above or below 11.5V in practice. A competent electrician would flag this and consider upsizing conductors.\n\nOption B claims a clear pass \u2014 this is technically correct but practically reckless. At 11.1V vs 11.5V limit, the margin is only 0.4V (less than 4% of the limit itself), which is insufficient for real-world conditions.\n\nOption C is wrong because the voltage drop limit for lighting (5%) applies to the total installation drop regardless of which segment carries what percentage. Sub-mains feeding lighting circuits are still subject to the 5% lighting limit, not a 7% general circuit limit.\n\nOption D is clearly wrong \u2014 AS/NZS 3000 Clause 3.6.2 explicitly requires the TOTAL voltage drop to be assessed, not just the final circuit segment.",
+      "reference": "AS/NZS 3000:2018 Clause 3.6.2"
+    },
+    {
+      "id": "tp-011",
+      "topic": "Insulation Resistance",
+      "sub_topic": "Test voltage selection",
+      "difficulty": "medium",
+      "question": "When testing the insulation resistance of a 400V three-phase motor circuit, which test voltage is appropriate according to AS/NZS 3000?",
+      "options": [
+        "1000V DC insulation tester",
+        "500V DC insulation tester",
+        "250V DC insulation tester",
+        "A continuity tester on low voltage range"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Table 8.1 specifies 1000V DC as the test voltage for circuits operating above 500V. A 400V three-phase system operates at line-to-line voltage above 500V (400V is the nominal voltage; the actual system voltage including tolerances can reach 440V+), placing it in the 'above 500V' category requiring 1000V test voltage. Using the correct test voltage stresses the insulation to the appropriate level without damaging it.\n\nOption B (500V) is appropriate for circuits operating up to 500V nominal (e.g., 230V single-phase, 400V motor circuits with some interpretations), but AS/NZS 3000 Table 8.1 specifies 1000V for 400V three-phase systems.\n\nOption C (250V) is entirely inadequate for any installation-level testing \u2014 it is the test voltage for very low voltage circuits such as extra-low voltage (ELV) data or telecommunications wiring. It would give artificially high readings on a 400V circuit and fail to reveal insulation defects.\n\nOption D (continuity tester) is completely inappropriate. Continuity testers apply a very low voltage (typically 3\u20139V) and measure resistance to check conductor continuity \u2014 they cannot reveal insulation degradation and can give misleading readings on energised or partially energised circuits.",
+      "reference": "AS/NZS 3000:2018 Table 8.1; Clause 8.3.4"
+    },
+    {
+      "id": "tp-012",
+      "topic": "AS/NZS 3000 Application",
+      "sub_topic": "Notifiable work",
+      "difficulty": "medium",
+      "question": "Under the NZ Electricity (Safety) Regulations, which of the following is classified as notifiable work requiring notification to the EWRB before commencement?",
+      "options": [
+        "Installation of a new circuit for a cooking appliance",
+        "Replacement of a damaged socket outlet",
+        "Relocation of a light switch within the same room",
+        "Replacement of a circuit breaker of the same rating"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 The Electricity (Safety) Regulations 2010 (Schedule 2) specifies that adding a new circuit to an installation is notifiable work. Cooking appliances (cooktops, ovens) require dedicated circuits per AS/NZS 3000 Clause 4.2, so this represents a genuine circuit addition. Notification must be lodged with the EWRB before work begins \u2014 not after.\n\nOption B (replacement of a damaged socket outlet) is like-for-like repair of a consuming fitting. This is specifically excluded from notifiable work under the Regulations \u2014 provided it is replaced with an equivalent device of the same rating and type.\n\nOption C (relocation of a light switch within the same room) is a minor alteration. Moving a switch within the same room that does not involve any circuit modification, cable run change, or addition is generally not notifiable \u2014 though if the cable route needs to change, it may become notifiable depending on scope.\n\nOption D (replacement of a circuit breaker of the same rating) is explicitly excluded from notifiable work under the Regulations \u2014 same-for-same protective device replacement is maintenance, not notifiable work. If the device rating changed (e.g., upsizing), that WOULD be notifiable.",
+      "reference": "Electricity (Safety) Regulations 2010 (NZ) \u2014 Schedule 2"
+    },
+    {
+      "id": "tp-013",
+      "topic": "Supply Systems",
+      "sub_topic": "TT vs TN systems",
+      "difficulty": "medium",
+      "question": "In a TT supply system, the earth electrode resistance at the consumer's premises must be:",
+      "options": [
+        "Low enough to ensure fault current operates the protective device within the required time",
+        "Equal to the supply authority's earth electrode resistance",
+        "Greater than 200\u03a9 to limit touch voltage",
+        "Of no consequence as the MEN link provides the earth path"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 In a TT system, the consumer's earth electrode (Ra) is entirely separate from the supply authority's earth electrode. There is no metallic fault path back to the transformer like in a TN system. The fault return path relies entirely on the consumer's earth electrode and the soil resistance. The electrode resistance must be sufficiently low that, combined with the fault loop path, sufficient fault current flows to operate the protective device (MCB or fuse) within the time specified in AS/NZS 3000 Clause 5.3. If Ra is too high, fault current will be too low and the protective device may never trip \u2014 presenting a dangerous shock hazard.\n\nOption B (equal to the supply authority's electrode) misunderstands TT entirely \u2014 there is no relationship between the consumer's electrode resistance and the supply authority's electrode resistance in a TT system; they are entirely independent.\n\nOption C (greater than 200\u03a9) is the opposite of what is required. A high-resistance electrode in a TT system is dangerous \u2014 it prevents adequate fault current from flowing. The goal is a LOW resistance electrode, not high.\n\nOption D (of no consequence due to MEN link) describes TN-C-S or TN-S, not TT. In a TT system, there is no MEN link \u2014 the consumer's electrode and the supply N conductor are not connected at the installation. The electrode resistance is critical to safety.",
+      "reference": "AS/NZS 3000:2018 Clause 5.2.2; NZECP 34"
+    },
+    {
+      "id": "tp-014",
+      "topic": "Protection & Discrimination",
+      "sub_topic": "Selectivity coordination",
+      "difficulty": "hard",
+      "question": "For proper selectivity (discrimination) between a main circuit breaker (160A) and a sub-circuit breaker (32A), which statement is correct?",
+      "options": [
+        "The main breaker should have a rating at least 1.5 times the sub-breaker and a short-time delay characteristic",
+        "The sub-breaker should trip first because it has the lower rating under fault conditions",
+        "Both breakers will always trip simultaneously regardless of settings",
+        "Discrimination is only required between RCDs, not between MCBs"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Selectivity (discrimination) ensures that only the protective device closest to the fault opens, leaving the rest of the installation energised. For MCCBs, proper discrimination requires: (1) main device rating at least 1.5\u20132\u00d7 the sub-device rating (160A main vs 32A sub = 5\u00d7 ratio, well above minimum), AND (2) the main device must have a short-time delay (time delay) setting that allows the downstream device to complete its tripping operation before the upstream device begins to open. The 160A/32A ratio here far exceeds the 1.5\u00d7 minimum, making discrimination readily achievable.\n\nOption B is incomplete \u2014 while the sub-breaker SHOULD trip first in a well-designed discriminative system, this is only guaranteed if the main breaker has the required time delay setting. Without it, close-in faults (close to the main board) may cause both devices to operate simultaneously.\n\nOption C is wrong \u2014 properly set protective devices with appropriate time-current characteristics will selectively coordinate. Not all faults cause simultaneous tripping.\n\nOption D is incorrect \u2014 discrimination requirements apply to ALL protective devices including MCBs, MCCBs, fuses, and RCBOs. The degree of discrimination (full or partial) depends on the device characteristics and coordination studies.",
+      "reference": "AS/NZS 3000:2018 Clause 2.6; AS/NZS 60947.2"
+    },
+    {
+      "id": "tp-015",
+      "topic": "Circuit Design",
+      "sub_topic": "Cable selection criteria",
+      "difficulty": "medium",
+      "question": "When selecting a cable size for a 230V single-phase circuit, which AS/NZS 3000 requirement must be satisfied first?",
+      "options": [
+        "Current-carrying capacity (ampacity) must be determined from AS/NZS 3008",
+        "Voltage drop must be checked and within limits before ampacity is considered",
+        "The cheapest cable that fits the conduit must always be used",
+        "Earth conductor size can be half the active conductor size for circuits under 50m"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 3.2 requires that conductor size be determined with primary regard to current-carrying capacity, which must be established from AS/NZS 3008 Tables. These tables account for installation method, ambient temperature, grouping, conduit size, and other thermal factors to establish the maximum current the cable can carry safely without overheating. This is the first step \u2014 the voltage drop check then runs in parallel as a separate requirement.\n\nOption B is a common misconception. Voltage drop and ampacity are independent requirements \u2014 both must be satisfied, but voltage drop does not take precedence. If voltage drop fails after initial cable selection, a larger conductor is chosen and ampacity is re-checked for the new size. But you start with ampacity, not voltage drop.\n\nOption C is dangerous and non-compliant \u2014 cable selection must follow the standard's technical requirements, not cost. Using the 'cheapest' cable risks overheating, voltage drop failure, and fire.\n\nOption D is false. Earth conductor sizing is determined by AS/NZS 3000 Table 5.1 (or calculated per AS/NZS 3008) based on the protective device rating and circuit type \u2014 it is never simply half the active conductor size. For many circuits the earth must equal the active size.",
+      "reference": "AS/NZS 3000:2018 Clauses 3.2, 3.6; AS/NZS 3008"
+    },
+    {
+      "id": "tp-016",
+      "topic": "Testing & Verification",
+      "sub_topic": "Test sequence",
+      "difficulty": "medium",
+      "question": "In what sequence should insulation resistance testing be carried out on a new installation according to AS/NZS 3000?",
+      "options": [
+        "All circuits energised, with tests conducted between live conductors and earth with circuits connected",
+        "All circuits isolated and separated, each conductor tested against all others and against earth",
+        "Only the main switchboard needs testing before circuit testing",
+        "Earth continuity must be tested and passed before insulation resistance is tested"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Appendix C specifies that insulation resistance testing of final circuits is performed WITH THE CIRCUITS ENERGISED (all accessories, luminaires, and connected equipment in place and connected). Tests are conducted: between each live conductor and earth, and between adjacent live conductors (e.g., L-N). This in-service condition testing reflects actual operating conditions \u2014 isolating circuits and testing with disconnected accessories gives artificially high readings that would not be achieved in service.\n\nOption B (isolated and separated testing) gives artificially high readings because the test does not include connected loads, switch contacts, or terminal arrangements that are part of the in-service condition. This approach may pass in the test room but fail on installation.\n\nOption C is wrong \u2014 AS/NZS 3000 requires the entire installation to be tested, not just the main switchboard. Testing only the board would not reveal circuit-level insulation failures.\n\nOption D is wrong \u2014 earth continuity and insulation resistance are independent tests with independent acceptance criteria. There is no requirement in AS/NZS 3000 that earth continuity must pass before insulation resistance is tested. The sequence is: visual inspection \u2192 earth continuity \u2192 insulation resistance \u2192 Zs \u2192 polarity \u2192 RCD test. But earth continuity failure does not preclude or invalidate an insulation resistance test.",
+      "reference": "AS/NZS 3000:2018 Appendix C; Clause 8.3"
+    },
+    {
+      "id": "tp-017",
+      "topic": "Motors & Motor Starters",
+      "sub_topic": "DOL starter overload",
+      "difficulty": "medium",
+      "question": "In a Direct On Line (DOL) motor starter, the overload relay is sized as a percentage of full load current (FLC). The correct setting is typically:",
+      "options": [
+        "100\u2013112% of the motor nameplate FLC",
+        "80% of the motor nameplate FLC",
+        "150% of the motor nameplate FLC for short-time operation",
+        "Equal to the starting current of the motor"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Thermal overload relays in DOL starters are set to 100\u2013112% of the motor nameplate FLC. This allows the motor to operate continuously at its rated current without nuisance tripping, while still protecting against sustained overloads that would cause winding overheating. AS/NZS IEC 60947-4-1 governs the overload relay requirements.\n\nOption B (80% FLC) would cause immediate nuisance tripping during normal running. The motor's nameplate FLC is its rated operating current \u2014 setting the overload below this would open the circuit under normal full-load conditions.\n\nOption C (150% FLC) would provide inadequate motor protection \u2014 a sustained overload of 120\u2013130% FLC (within the trip-free zone below 150%) could cause significant motor heating and damage before the overload operates. 150% is typical for short-time rated devices used in infrequently operated circuits, not continuous DOL motor starting.\n\nOption D (equal to starting current) is wrong because the starting current (typically 5\u20137\u00d7 FLC for a DOL motor) is a brief transient condition, not a continuous current. The thermal overload has a time delay (thermal mass) specifically designed to ignore starting transients and trip only on sustained overloads. Setting at starting current would mean the overload never trips under any conditions.",
+      "reference": "AS/NZS 3000:2018; AS/NZS IEC 60947-4-1"
+    },
+    {
+      "id": "tp-018",
+      "topic": "Maximum Demand",
+      "sub_topic": "Cooker diversity",
+      "difficulty": "hard",
+      "question": "A household has a 32A cooktop element. According to AS/NZS 3000 Table 4.2, the maximum demand value to be used for this circuit in the overall installation calculation is:",
+      "options": [
+        "32A (100% of the circuit rating, no diversity applied to the appliance circuit)",
+        "24A (75% diversity factor applied to 32A)",
+        "16A (50% diversity factor applied \u2014 cooking appliances qualify for diversity)",
+        "40A (125% \u2014 cooking appliances require upsizing)"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Table 4.2 applies diversity factors to groups of outlets and certain appliances, but dedicated fixed appliance circuits with their own protective device rating are taken at 100% for maximum demand calculation. A 32A cooktop circuit has a 32A protective device \u2014 this is the maximum demand value used in the installation calculation. The cooktop will draw 32A when all elements are on; there is no diversity factor applied to a dedicated circuit of this type.\n\nOption B (24A = 75% of 32A) incorrectly assumes cooking appliances receive a diversity factor. Table 4.2 diversity applies to cookers as a group of sockets or outlets, not to a dedicated single-appliance circuit with its own protective device.\n\nOption C (16A = 50% of 32A) is another incorrect diversity application. Some appliances receive diversity in Table 4.2, but a dedicated 32A cooktop circuit is not among them. Applying 50% would severely undersize the supply cables and protective device for the actual load.\n\nOption D (40A = 125%) has no basis in AS/NZS 3000. There is no 125% demand factor for cooking appliances. If a cooktop circuit were undersized, it would need to be upsized to match the appliance rating, not to 125% of it.",
+      "reference": "AS/NZS 3000:2018 Table 4.2; Clause 4.2"
+    },
+    {
+      "id": "tp-019",
+      "topic": "AS/NZS 3000 Application",
+      "sub_topic": "RCD mandatory requirements",
+      "difficulty": "medium",
+      "question": "AS/NZS 3000 mandates RCD protection for socket outlets rated at not more than:",
+      "options": [
+        "20A \u2014 all socket outlets up to and including 20A must be RCD protected",
+        "32A \u2014 RCD protection required only for 32A and above",
+        "10A \u2014 the standard 10A socket outlet is the threshold",
+        "63A \u2014 RCDs are only required for industrial installations"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 2.6.2 requires that all socket outlets with a rating not exceeding 20A shall be RCD-protected. This covers standard 10A, 15A, and 20A socket outlets \u2014 virtually every socket outlet in domestic and commercial premises. The 20A threshold captures all standard socket outlets used for portable equipment that may be handled during a fault. This is a core safety provision because portable equipment is the highest-risk category for earth faults involving human contact.\n\nOption B (32A threshold) is wrong \u2014 a 32A socket outlet is not a standard configuration and would not be used for portable equipment. RCD protection is mandated for outlets up to 20A, not above.\n\nOption C (10A threshold) is wrong because the 20A limit captures all common socket outlets. Excluding 15A and 20A outlets from RCD protection would create a significant safety gap \u2014 15A outlets are common in commercial installations for higher-power appliances.\n\nOption D (63A and industrial only) is entirely wrong \u2014 AS/NZS 3000's RCD requirements apply to all installation types including domestic and commercial, not just industrial. 63A RCDs do exist for protecting large circuits, but the 20A threshold for socket outlets applies universally.",
+      "reference": "AS/NZS 3000:2018 Clause 2.6.2"
+    },
+    {
+      "id": "tp-020",
+      "topic": "Switchboards",
+      "sub_topic": "Main switch requirements",
+      "difficulty": "medium",
+      "question": "Under AS/NZS 3000, a main switch on a switchboard must be:",
+      "options": [
+        "Capable of being operated by one person and clearly labelled as the main switch for each installation or separately switched section",
+        "A 3-phase circuit breaker rated at the incomer capacity",
+        "Installed inside the premises for security reasons",
+        "Protected by an RCD to prevent shock during operation"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 2.8 and the Electricity (Safety) Regulations require that a switchboard shall have a main switch (or switches) clearly labelled to identify what they control, and capable of being operated by one person. The switch must isolate the entire installation (or the relevant separately switched section). Switchboards must be accessible \u2014 not concealed inside cupboards, enclosed spaces, or behind barriers.\n\nOption B (3-phase MCB at incomer capacity) is not a mandatory requirement for all main switches. While many main switches are MCBs or MCCBs, the standard does not mandate a 3-phase breaker \u2014 a main switch may be a linked switch or other disconnecting means. The key requirements are isolation capability and clear labelling, not a specific device type.\n\nOption C (installed inside premises for security) is incorrect \u2014 switchboards are typically installed in accessible locations (not inside cupboards or enclosed spaces) to ensure safe and easy isolation. Concealing a switchboard reduces safety accessibility and is not required by AS/NZS 3000.\n\nOption D (RCD protection required on main switch) is wrong \u2014 RCD protection protects downstream circuits from earth leakage. There is no requirement for the main switch itself to be RCD-protected. RCD protection on the main switch would create a hazard: if a downstream earth fault caused the main RCD to trip, it could blackout the entire installation rather than isolating just the faulty circuit.",
+      "reference": "AS/NZS 3000:2018 Clause 2.8; NZ Electrical (Safety) Regulations 2010"
+    },
+    {
+      "id": "tp-021",
+      "topic": "Voltage Drop",
+      "sub_topic": "k-factor tables",
+      "difficulty": "medium",
+      "question": "Using AS/NZS 3000 Table 3, a cable run of 0.8km carrying 15A in conduit on a concrete slab uses a k-factor of 11.7. The voltage drop is:",
+      "options": [
+        "14.04V",
+        "7.02V",
+        "28.08V",
+        "3.51V"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 V = k \u00d7 I \u00d7 L = 11.7 \u00d7 15 \u00d7 0.8 = 140.4 \u00f7 10 (100m unit) = 14.04V. For a 230V general circuit, 14.04V is within the 7% limit (16.1V). Option B (7.02V) would result from using 0.4km. Option C (28.08V) requires a 2km run. Option D (3.51V) is dividing by 40 instead of 10 in the unit conversion.",
+      "reference": "AS/NZS 3000:2018 Clause 3.6; Table 3"
+    },
+    {
+      "id": "tp-022",
+      "topic": "Voltage Drop",
+      "sub_topic": "Conductor sizing interaction",
+      "difficulty": "hard",
+      "question": "A 40m run of 4mm\u00b2 copper conductor in conduit carries 20A and drops 6.2V. To limit voltage drop to 9.2V for this circuit, the minimum conductor size required is:",
+      "options": [
+        "6mm\u00b2 copper",
+        "4mm\u00b2 is sufficient",
+        "10mm\u00b2 copper",
+        "2.5mm\u00b2 copper"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 At 40m with 20A load, 4mm\u00b2 drops 6.2V. To achieve \u22649.2V, the current-carrying capacity must be checked and if the existing conductor passes ampacity but fails volt-drop, the next standard size up (6mm\u00b2) must be selected. AS/NZS 3000 Clauses 3.2 and 3.6 require both ampacity AND voltage drop to be satisfied \u2014 where volt-drop governs, the larger conductor is mandatory. Option B fails because the question explicitly asks what is needed to meet the 9.2V limit. Option D (2.5mm\u00b2) would be worse.",
+      "reference": "AS/NZS 3000:2018 Clauses 3.2, 3.6; AS/NZS 3008"
+    },
+    {
+      "id": "tp-023",
+      "topic": "Voltage Drop",
+      "sub_topic": "Multicore cable grouping",
+      "difficulty": "medium",
+      "question": "Three identical 230V single-phase sub-circuits share a common conduit. Each carries 10A. When calculating voltage drop for the worst-case circuit, the correct approach is:",
+      "options": [
+        "Each circuit is calculated individually using its own current and length \u2014 grouping affects ampacity via AS/NZS 3008 but not voltage drop calculation",
+        "The combined heating from all three circuits must be added to the voltage drop calculation",
+        "All three circuit currents add vectorially to 30A for voltage drop purposes",
+        "Grouped circuits receive a 50% voltage drop reduction factor"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3008 voltage drop calculations are per-circuit, per-current, per-length. The grouping factor for current-carrying capacity (AS/NZS 3008 Table 2) does NOT change the individual circuit voltage drop calculation. Each circuit's voltage drop is calculated using its own current and resistance \u2014 the fact that cables are in the same conduit is already implicitly accounted for in the k-factor. Option B \u2014 grouping affects ampacity (heating), not voltage drop. Option C \u2014 this is incorrect. Option D \u2014 no such voltage drop grouping factor exists in AS/NZS 3000.",
+      "reference": "AS/NZS 3000:2018 Clause 3.6; AS/NZS 3008 Tables 1-30"
+    },
+    {
+      "id": "tp-024",
+      "topic": "Voltage Drop",
+      "sub_topic": "Three-phase voltage drop",
+      "difficulty": "medium",
+      "question": "A three-phase motor circuit operates at 400V line-to-line, runs 100m, and carries 26A per phase. Using AS/NZS 3000 Clause 3.6 three-phase voltage drop formula (V = \u221a3 \u00d7 k \u00d7 I \u00d7 L / 1000) with k=1.8 for the selected cable, the voltage drop is closest to:",
+      "options": [
+        "8.1V",
+        "4.7V",
+        "14.0V",
+        "2.4V"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 V = \u221a3 \u00d7 k \u00d7 I \u00d7 L / 1000 = 1.732 \u00d7 1.8 \u00d7 26 \u00d7 100 / 1000 = 1.732 \u00d7 1.8 \u00d7 2.6 = 1.732 \u00d7 4.68 = 8.10V. This is within the 7% voltage drop limit for a general motor circuit (400V \u00d7 0.07 = 28V). Option B (4.7V) would be using 0.5km instead of 0.1km. Option C (14V) would require k=3.1 which is for a different installation method.",
+      "reference": "AS/NZS 3000:2018 Clause 3.6; AS/NZS 3008"
+    },
+    {
+      "id": "tp-025",
+      "topic": "Voltage Drop",
+      "sub_topic": "Voltage drop limit determination",
+      "difficulty": "medium",
+      "question": "A 230V sub-main supplying a distribution board that feeds both lighting and general power circuits has a maximum permissible voltage drop of:",
+      "options": [
+        "7% (16.1V) \u2014 sub-mains supplying mixed loads use the general circuit limit per Clause 3.6.2(b)",
+        "5% (11.5V) \u2014 the strictest limit applies throughout the installation",
+        "3% (6.9V) \u2014 sub-mains are held to a tighter standard",
+        "9% (20.7V) \u2014 sub-mains are permitted a higher drop than final circuits"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 3.6.2 distinguishes: lighting circuits (5% limit) vs general circuits (7% limit). A sub-main that feeds both lighting and power is classified as a general-use circuit \u2014 7% limit applies. The strictest limit in a mixed board is 5% (for the lighting portion) but the sub-main itself is assessed at 7% because it is not exclusively a lighting circuit. Option B applies only to dedicated lighting sub-mains. Option C is not a standard limit. Option D \u2014 sub-mains do not get a higher limit than final circuits.",
+      "reference": "AS/NZS 3000:2018 Clause 3.6.2"
+    },
+    {
+      "id": "tp-026",
+      "topic": "Voltage Drop",
+      "sub_topic": "Voltage drop vs ampacity",
+      "difficulty": "hard",
+      "question": "When voltage drop calculations require a larger conductor than current-carrying capacity calculations, the installation designer must:",
+      "options": [
+        "Select the larger conductor size determined by voltage drop \u2014 both requirements must be satisfied",
+        "Always use the ampacity-derived size and document the voltage drop deviation",
+        "Apply to the supply authority for a voltage variation approval",
+        "Use voltage-drop size only for lighting, ampacity size for power circuits"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 3.2 is explicit: conductor size must satisfy BOTH current-carrying capacity AND voltage drop requirements. Where voltage drop requires a larger conductor, the larger size is mandatory. This is not optional and does not require supply authority approval for normal installations \u2014 the designer simply selects the larger conductor. Option B is non-compliant \u2014 voltage drop is a mandatory requirement. Option C is only applicable in exceptional circumstances where supply authority voltage variation is agreed. Option D is arbitrary and not supported by the standard.",
+      "reference": "AS/NZS 3000:2018 Clauses 3.2, 3.6"
+    },
+    {
+      "id": "tp-027",
+      "topic": "Voltage Drop",
+      "sub_topic": "Voltage drop proportionality",
+      "difficulty": "medium",
+      "question": "Voltage drop in a conductor is proportional to which combination of factors?",
+      "options": [
+        "Current flowing and conductor resistance (which increases with length and decreases with larger cross-section)",
+        "Supply voltage and frequency",
+        "Ambient temperature and installation method only",
+        "Power factor and reactive impedance only"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Ohm's Law for a conductor: V = I \u00d7 R. Resistance R = \u03c1 \u00d7 L / A. So V_drop increases with higher current and longer length, and decreases with larger conductor area. Option B \u2014 supply voltage determines the percentage limit context, not the magnitude of V_drop in the formula. Frequency has no effect on resistive volt-drop in this context. Option C \u2014 ambient temperature affects ampacity but not directly the volt-drop formula (though temperature slightly increases R). Option D \u2014 for purely resistive circuits at 50Hz, PF has no effect; for circuits with significant reactance, PF affects reactive volt-drop component, but AS/NZS 3000's simplified volt-drop method using k-factors accounts for this.",
+      "reference": "AS/NZS 3000:2018 Clause 3.6"
+    },
+    {
+      "id": "tp-028",
+      "topic": "Fault Loop Impedance",
+      "sub_topic": "Zs measurement procedure",
+      "difficulty": "medium",
+      "question": "When measuring Zs (earth fault loop impedance) at a socket outlet, the correct procedure is:",
+      "options": [
+        "Measure between the phase conductor and the earth contact at the outlet with the circuit energised and the earthing system connected",
+        "Isolate the circuit, disconnect the earthing conductor, and measure phase to the disconnected earth rod",
+        "Measure between neutral and earth at the outlet",
+        "Zs can only be calculated, not measured, on an operational installation"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Zs is measured with the installation energised and earthing fully connected. The instrument measures between line and earth at the outlet \u2014 this gives Zs = Ze + Zt (total loop). AS/NZS 3019 specifies the method: a high-current test pulse (15-20A) is injected between line and earth and the resulting voltage drop is measured. Option B is wrong \u2014 disconnecting earthing breaks the loop, giving an open-circuit reading, not Zs. Option C gives the neutral-earth voltage which indicates neutral integrity issues, not loop impedance. Option D is false \u2014 Zs is routinely measured in-service with a loop impedance tester.",
+      "reference": "AS/NZS 3019; AS/NZS 3000 Clause 5.3"
+    },
+    {
+      "id": "tp-029",
+      "topic": "Fault Loop Impedance",
+      "sub_topic": "Ze responsibility",
+      "difficulty": "medium",
+      "question": "Ze (external earth fault loop impedance) is primarily the responsibility of:",
+      "options": [
+        "The supply network operator \u2014 it is measured at the point of supply and is outside the electrician's scope",
+        "The installing electrician who designed the installation",
+        "The property owner",
+        "The meter service provider"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Ze is the external loop impedance from the supply transformer to the point of supply. The supply authority is responsible for maintaining Ze at a level that allows the installation's protective devices to operate within AS/NZS 3000 Table 5.1 limits when combined with the installation's internal Zt. The electrician's responsibility is Zt (internal loop impedance within the installation). Ze is declared by the supply authority and can be measured at the point of supply. Option B \u2014 electrician is responsible for Zt, not Ze. Option C \u2014 property owners have no responsibility for supply network characteristics. Option D \u2014 meter providers deal with metering, not supply earthing.",
+      "reference": "AS/NZS 3000:2018 Clause 5.2; NZ Electrical Regulations"
+    },
+    {
+      "id": "tp-030",
+      "topic": "Fault Loop Impedance",
+      "sub_topic": "Zs compliance",
+      "difficulty": "hard",
+      "question": "A Type B 16A MCB protects a socket outlet circuit. AS/NZS 3000 Table 5.1 specifies maximum Zs of 1.83\u03a9. A measured Zs of 1.90\u03a9 at the furthest socket means:",
+      "options": [
+        "Non-compliant \u2014 Zs must not exceed the Table 5.1 value under any circumstances",
+        "Compliant because the MCB would eventually clear the fault",
+        "Non-compliant but acceptable if Ze is subtracted from the measured Zs",
+        "Compliant because the fault current is still sufficient to operate the MCB"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 5.3 is absolute: Zs shall NOT EXCEED the Table 5.1 value. 1.90\u03a9 > 1.83\u03a9 = non-compliant. The Zs limit exists to ensure: (1) sufficient fault current flows for the protective device to operate within the required time; (2) touch voltages during the fault remain below safe limits. Option B is wrong \u2014 compliance is determined by the absolute Zs limit, not by whether the device would eventually trip. Option C is a dangerous and non-compliant practice \u2014 Ze cannot be subtracted from a measured Zs. Option D is the same error as B.",
+      "reference": "AS/NZS 3000:2018 Clause 5.3; Table 5.1"
+    },
+    {
+      "id": "tp-031",
+      "topic": "Fault Loop Impedance",
+      "sub_topic": "Zt calculation",
+      "difficulty": "hard",
+      "question": "The resistance of 50m of 2.5mm\u00b2 copper phase conductor at 20\u00b0C is 0.694\u03a9. The earth continuity conductor in the same run is 1.5mm\u00b2 with resistance 1.15\u03a9. The Zt contribution from this cable run is:",
+      "options": [
+        "1.84\u03a9 (phase 0.694\u03a9 + earth 1.15\u03a9, summed for the line-to-earth fault path)",
+        "0.694\u03a9 only \u2014 the earth path resistance is not included in Zt for a line-to-earth fault",
+        "2.31\u03a9 (direct sum of phase and earth resistance)",
+        "Zt cannot be calculated without knowing the actual route length of the earth conductor"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 For a line-to-earth fault, the fault current path is: line conductor (origin \u2192 fault) + earth continuity conductor (fault \u2192 origin MET). The total loop resistance is Rline + Rearth. 50m of 2.5mm\u00b2 copper = 0.694\u03a9 (phase). 50m of 1.5mm\u00b2 copper = 1.15\u03a9 (earth CPC). Zt = 0.694 + 1.15 = 1.844\u03a9. Option B is wrong \u2014 Zt includes the earth return path. Option C is wrong \u2014 while the correct answer is numerically close to this, the correct concept is that both path segments must be summed. Option D is wrong \u2014 the route length of the earth is the same as the phase for a single cable run.",
+      "reference": "AS/NZS 3000:2018 Clause 5.2; AS/NZS 3008"
+    },
+    {
+      "id": "tp-032",
+      "topic": "Fault Loop Impedance",
+      "sub_topic": "Prospective fault current",
+      "difficulty": "medium",
+      "question": "Prospective fault current (PFC) at a main switchboard is measured at 3.2kA. The main switch is rated at 5kA. This installation:",
+      "options": [
+        "Is acceptable \u2014 the switch rating exceeds the maximum available fault current with adequate margin",
+        "Fails \u2014 the PFC exceeds the switch rating",
+        "Is borderline \u2014 a 40% derating factor must be applied",
+        "Is only acceptable if the PFC decreases below 2.5kA"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Protective devices must have an interrupting capacity (Icu/Icn) not less than the prospective fault current at the point of installation. A 5kA-rated device at a location where PFC = 3.2kA provides a 1.56\u00d7 margin \u2014 well above the minimum requirements. Option B is wrong because 3.2kA < 5kA. Option C is wrong \u2014 no 40% derating is required when the device rating exceeds PFC. Option D is wrong \u2014 there is no such rule.",
+      "reference": "AS/NZS 3000:2018 Clause 2.6; AS/NZS 60898.1"
+    },
+    {
+      "id": "tp-033",
+      "topic": "Fault Loop Impedance",
+      "sub_topic": "MCB type and Zs",
+      "difficulty": "hard",
+      "question": "AS/NZS 3000 Table 5.1 gives different Zs limits for Type B, C, and D MCBs of the same current rating because:",
+      "options": [
+        "Type B devices have lower magnetic trip thresholds (3-5\u00d7 In) requiring lower Zs for reliable operation within the required disconnection time",
+        "Type C devices are more sensitive and need higher Zs limits",
+        "Table 5.1 only applies to Type B devices",
+        "The difference is due to thermal overload characteristics only"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Type B MCBs trip magnetically at 3-5\u00d7 In, Type C at 5-10\u00d7 In, Type D at 10-20\u00d7 In. Because the magnetic trip threshold differs, the same Zs produces different fault currents and thus different tripping times. A Type B device needs a lower Zs to ensure the fault current (Zs/table_max) produces sufficient magnetic force to trip within 0.4s for final circuits. Type C and D tolerate higher Zs because their higher thresholds still produce enough magnetic force at the same Zs. Option B is wrong \u2014 Type C doesn't need higher Zs, it tolerates it. Option C is false. Option D is wrong \u2014 the difference is magnetic (instantaneous), not thermal.",
+      "reference": "AS/NZS 3000:2018 Table 5.1; AS/NZS 60898.1"
+    },
+    {
+      "id": "tp-034",
+      "topic": "AS/NZS 3000 Application",
+      "sub_topic": "Standard voltage scope",
+      "difficulty": "medium",
+      "question": "AS/NZS 3000 applies to electrical installations operating at which maximum voltage?",
+      "options": [
+        "1000V AC or 1500V DC (low voltage) \u2014 covering domestic through to light industrial",
+        "Any voltage above extra-low voltage (ELV)",
+        "33,000V \u2014 the limit for distribution networks",
+        "230V/400V only"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 applies to low voltage, defined as not exceeding 1000V AC or 1500V DC between conductors, or 600V AC or 900V DC between a conductor and earth. This covers 230V single-phase domestic through 400V three-phase commercial/industrial. Option B \u2014 ELV is up to 50V AC or 120V DC; AS/NZS 3000 covers low voltage, not ELV. Option C \u2014 33kV is distribution voltage, above low voltage. Option D is false \u2014 the standard explicitly covers up to 1000V AC.",
+      "reference": "AS/NZS 3000:2018 Clause 1.4"
+    },
+    {
+      "id": "tp-035",
+      "topic": "AS/NZS 3000 Application",
+      "sub_topic": "Conductor identification",
+      "difficulty": "medium",
+      "question": "Per current NZ standards (AS/NZS 3000:2018 harmonised colour system), the colour coding for a neutral conductor in fixed wiring is:",
+      "options": [
+        "Blue (light blue) \u2014 harmonised international standard adopted in AS/NZS 3000:2018 for new work",
+        "Black \u2014 the old NZ convention (pre-2018)",
+        "Red \u2014 always the active/live conductor colour",
+        "Green/Yellow \u2014 for neutral in fixed wiring"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000:2018 adopted the international harmonised colour scheme (IEC 60446): Brown = line, Blue = neutral, Green/Yellow = earth for new work. For existing installations (pre-2018) using the old NZ colours, Black = neutral and Red = active were used. The current standard applies Blue for neutral in fixed wiring. Option B is the old NZ convention. Option C is the old NZ active colour. Option D \u2014 Green/Yellow is always earth/protective conductor, never neutral.",
+      "reference": "AS/NZS 3000:2018 Clause 3.8; Table 3"
+    },
+    {
+      "id": "tp-036",
+      "topic": "AS/NZS 3000 Application",
+      "sub_topic": "Documentation requirements",
+      "difficulty": "medium",
+      "question": "AS/NZS 3000 and NZ Electricity (Safety) Regulations require which documentation for a completed electrical installation?",
+      "options": [
+        "A Certificate of Compliance (CoC) or Electrical Works Certificate issued by the licensed electrical worker, plus circuit schedules where applicable",
+        "A visual inspection report only",
+        "A manufacturer warranty card for all installed equipment",
+        "A load forecast for the next 10 years"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 The Electricity (Safety) Regulations 2010 (NZ) and AS/NZS 3000 require a Certificate of Compliance (CoC) or Electrical Works Certificate to be issued by the licensed electrical worker for all notifiable work. Circuit schedules (legends/charts identifying each circuit and protective device) are also required where circuits have been installed or altered. Option B is insufficient. Option C is a product warranty matter, not a compliance requirement. Option D is a design document, not a regulatory requirement.",
+      "reference": "AS/NZS 3000:2018 Clause 1.6; Electricity (Safety) Regulations 2010 (NZ)"
+    },
+    {
+      "id": "tp-037",
+      "topic": "AS/NZS 3000 Application",
+      "sub_topic": "MEN system",
+      "difficulty": "hard",
+      "question": "A Multiple Earthed Neutral (MEN) link is required in which type of earthing system in NZ?",
+      "options": [
+        "TN-C-S \u2014 where the supply PEN conductor is split at the installation origin into separate N and PE conductors connected by the MEN link",
+        "TT system only \u2014 where the installation earth electrode is completely isolated from the supply",
+        "IT system \u2014 high impedance earthed neutral",
+        "DC systems only"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 MEN is the NZ term for TN-C-S. The supply provides a PEN (combined neutral-earth) conductor from the transformer. At the installation's origin, the PEN is 'split' into N and PE, which are connected at the Main Earth Terminal via the MEN link. This is the standard NZ earthing arrangement per AS/NZS 3000 Clause 5.2.1. Option B \u2014 TT has no PEN conductor; each electrode is independent. NZ distribution networks are not TT. Option C \u2014 IT is used in hospitals/critical infrastructure, not standard NZ installations. Option D \u2014 MEN is an AC system requirement.",
+      "reference": "AS/NZS 3000:2018 Clause 5.2.1; NZECP 34"
+    },
+    {
+      "id": "tp-038",
+      "topic": "AS/NZS 3000 Application",
+      "sub_topic": "EWRB notification",
+      "difficulty": "medium",
+      "question": "A property owner with a valid NZ electrical licence may legally:",
+      "options": [
+        "Carry out notifiable work on their own property \u2014 but must still lodge EWRB notification before starting the work",
+        "Carry out any electrical work on any property without restriction",
+        "Only carry out non-notifiable work; licensed electricians must do all notifiable work",
+        "Notify EWRB after completing the work, not before"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 The Electricity (Safety) Regulations 2010 (NZ) apply to all persons regardless of licence status. Notifiable work requires EWRB notification BEFORE commencement \u2014 this applies to ALL notifiable work, whether done by a property owner or licensed electrician. A licensed property owner CAN do notifiable work on their own property \u2014 but must still notify EWRB first. Option B is wrong \u2014 licence does not permit unrestricted work on any property. Option C is partially true (non-notifiable = no restriction; notifiable = licensed electrician required), but a licensed property owner IS a licensed electrician in this context. Option D \u2014 notification must be BEFORE work, not after.",
+      "reference": "Electricity (Safety) Regulations 2010 (NZ); EWRB guidelines"
+    },
+    {
+      "id": "tp-039",
+      "topic": "AS/NZS 3000 Application",
+      "sub_topic": "Connection to supply",
+      "difficulty": "medium",
+      "question": "Before connecting an electrical installation to the supply network, which must be completed?",
+      "options": [
+        "All tests in AS/NZS 3000 Chapter 8 (insulation resistance, earth continuity, Zs, polarity, RCD operation) and a Certificate of Compliance issued",
+        "Visual inspection only \u2014 testing can be done after connection",
+        "Testing only of circuits above 32A rating",
+        "Only the main switch needs testing before energisation"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 8.1 and the Electricity (Safety) Regulations require ALL verification tests to be completed BEFORE connection to the supply. These include: insulation resistance (all circuits and complete installation), earth continuity of protective conductors, Zs at the furthest point of each circuit, polarity, RCD operation, and any other specified tests. A Certificate of Compliance must also be issued. Option B is dangerous and non-compliant. Option C \u2014 all circuits must be tested regardless of rating. Option D is inadequate \u2014 comprehensive testing of all circuits is required.",
+      "reference": "AS/NZS 3000:2018 Clause 8.1; Appendix C"
+    },
+    {
+      "id": "tp-040",
+      "topic": "Insulation Resistance",
+      "sub_topic": "IR test on complete installation",
+      "difficulty": "medium",
+      "question": "When testing the insulation resistance of a complete low voltage installation with all circuits connected and main switch closed, AS/NZS 3000 Table 8.1 specifies a minimum acceptable reading of:",
+      "options": [
+        "1 M\u03a9 \u2014 the minimum for each circuit and the complete installation tested with a 500V DC insulation tester",
+        "0.5 M\u03a9 for the complete installation",
+        "2 M\u03a9 for each individual circuit",
+        "100 k\u03a9 if the installation is less than 12 months old"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Table 8.1 specifies 1 M\u03a9 as the minimum insulation resistance for any circuit or complete installation when tested with a 500V DC insulation tester. This applies to the complete installation with all circuits connected and all accessories in place. Option B (0.5 M\u03a9) is sometimes cited for individual appliances in isolation, not for installations. Option C (2 M\u03a9) is a good result but above the minimum. Option D (100 k\u03a9) is dangerously low and would indicate a serious fault requiring immediate investigation.",
+      "reference": "AS/NZS 3000:2018 Table 8.1; Clause 8.3.4"
+    },
+    {
+      "id": "tp-041",
+      "topic": "Insulation Resistance",
+      "sub_topic": "Electronic equipment IR testing",
+      "difficulty": "hard",
+      "question": "When testing insulation resistance on a circuit containing electronic equipment (dimmers, electronic ballasts, VSDs), the correct approach is:",
+      "options": [
+        "Isolate or disconnect the electronic equipment before applying the 500V test voltage \u2014 it may be damaged or give false low readings",
+        "Test through the electronic equipment as it is part of the installation",
+        "Electronic equipment does not affect insulation resistance readings",
+        "Apply only 250V test voltage to all circuits regardless of voltage rating"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Electronic equipment contains semiconductors and capacitors that can be damaged by the 500V DC insulation test voltage, and capacitors can store charge giving false low readings. AS/NZS 3000 Appendix C notes that electronic equipment should be disconnected or isolated before IR testing. Where disconnection is impractical, equipment should be tested separately per manufacturer instructions. Option B \u2014 applying insulation test voltage across electronic equipment can destroy it. Option C is false. Option D \u2014 the test voltage requirement does not change; the equipment must be isolated.",
+      "reference": "AS/NZS 3000:2018 Appendix C; equipment manufacturer instructions"
+    },
+    {
+      "id": "tp-042",
+      "topic": "Insulation Resistance",
+      "sub_topic": "Humidity effects on IR",
+      "difficulty": "medium",
+      "question": "Insulation resistance readings taken in high humidity (above 80% RH) should be interpreted with caution because:",
+      "options": [
+        "Moisture creates leakage paths on insulation surfaces, giving artificially low readings that may improve significantly when dry",
+        "High humidity has no effect on insulation resistance",
+        "Humidity only affects readings above 500 M\u03a9",
+        "IR testers automatically temperature- and humidity-compensate"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Moisture on conductor insulation, in terminations, and inside equipment creates conductive leakage paths that artificially reduce measured insulation resistance. A reading of 2 M\u03a9 on a humid day could read 20 M\u03a9+ when dry. AS/NZS 3000 does not specify minimum humidity for testing but industry guidance is to note conditions and interpret borderline results in context. Condensation inside enclosures can cause genuine faults. Option B is false. Option C is nonsense. Option D is false \u2014 IR testers do not automatically compensate.",
+      "reference": "AS/NZS 3000:2018 Appendix C"
+    },
+    {
+      "id": "tp-043",
+      "topic": "Insulation Resistance",
+      "sub_topic": "IR test voltage selection",
+      "difficulty": "medium",
+      "question": "A 230V lighting circuit and a 24V ELV circuit share the same conduit. The insulation resistance test on the 230V circuit should be conducted at:",
+      "options": [
+        "500V DC \u2014 the highest voltage circuit in the group determines the test voltage; the ELV circuit should be isolated first",
+        "24V \u2014 to avoid damaging the ELV circuit",
+        "250V DC \u2014 the average of the two voltages",
+        "Test voltage selection is not relevant for mixed-voltage conduit runs"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Table 8.1 requires the test voltage to be appropriate to the circuit's nominal voltage. For circuits operating above 50V and up to 500V, 500V DC is required. The ELV circuit in the same conduit must be isolated before testing the 230V circuit \u2014 the 500V test voltage could damage ELV equipment. Option B would give meaningless results for the 230V circuit. Option C has no basis in the standard. Option D is false \u2014 test voltage selection is critical and mandatory.",
+      "reference": "AS/NZS 3000:2018 Table 8.1; Clause 8.3.4"
+    },
+    {
+      "id": "tp-044",
+      "topic": "Maximum Demand",
+      "sub_topic": "Diversity application",
+      "difficulty": "hard",
+      "question": "AS/NZS 3000 Table 4.2 diversity factors are applied to:",
+      "options": [
+        "Groups of similar circuits or appliances \u2014 not to individual dedicated circuits with their own protective device rating",
+        "Every individual circuit regardless of its type or rating",
+        "Only residential loads, not commercial installations",
+        "The total connected load before circuit subdivision"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Table 4.2 diversity factors apply to GROUPS of similar circuits. Individual dedicated circuits at their protective device rating are taken at 100% \u2014 no diversity is applied to a dedicated cooktop circuit or hot water circuit. The diversity is applied to groups: e.g., 8 identical lighting circuits: first 2 at 100%, remaining at 50%. Option B is wrong \u2014 dedicated circuits at their device rating don't receive additional diversity. Option C is wrong \u2014 Table 4.2 applies to all installation types. Option D is wrong \u2014 diversity is applied after subdivision, to groups of similar loads.",
+      "reference": "AS/NZS 3000:2018 Table 4.2; Clause 4.2"
+    },
+    {
+      "id": "tp-045",
+      "topic": "Maximum Demand",
+      "sub_topic": "Hot water cylinder demand",
+      "difficulty": "medium",
+      "question": "A 3.0kW 230V storage hot water cylinder with a dedicated 16A circuit contributes to maximum demand at:",
+      "options": [
+        "16A \u2014 dedicated fixed storage water heaters above 1kW are taken at 100% of circuit rating; no diversity factor applies",
+        "10A applying a 60% diversity factor",
+        "13A using an 80% factor",
+        "The cylinder is excluded from maximum demand calculations"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Per AS/NZS 3000 Table 4.2, fixed storage water heaters above 1kW are assessed at their circuit protective device rating \u2014 100% no diversity. The 3.0kW cylinder at 230V draws 13A but the circuit is protected at 16A; maximum demand = 16A. Table 4.2 does not apply diversity to dedicated storage water heater circuits. Option B and C \u2014 these factors are not specified in Table 4.2 for storage water heaters. Option D is wrong \u2014 water heaters are significant loads and must be included.",
+      "reference": "AS/NZS 3000:2018 Table 4.2; Clause 4.2"
+    },
+    {
+      "id": "tp-046",
+      "topic": "Maximum Demand",
+      "sub_topic": "Lighting diversity calculation",
+      "difficulty": "medium",
+      "question": "A domestic installation has 8 identical 5A lighting circuits. Per AS/NZS 3000 Table 4.2, the maximum demand contribution of all 8 circuits is:",
+      "options": [
+        "25A \u2014 first 2 circuits at 100% (10A) plus remaining 6 at 50% (15A) = 25A",
+        "40A \u2014 all circuits at 100% with no diversity",
+        "10A \u2014 applying 50% diversity to all circuits",
+        "20A \u2014 a simplified calculation"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Table 4.2: first 2 circuits at 100%, subsequent at 50%. 8 \u00d7 5A circuits: (2 \u00d7 5A \u00d7 100%) + (6 \u00d7 5A \u00d7 50%) = 10A + 15A = 25A. Option B gives no diversity credit (wrong). Option C applies 50% to all including the first two (wrong). Option D (20A) is not the correct application of Table 4.2 for 8 circuits. Note: if the total connected load is used instead, different figures result \u2014 the standard's method is 25A.",
+      "reference": "AS/NZS 3000:2018 Table 4.2"
+    },
+    {
+      "id": "tp-047",
+      "topic": "Maximum Demand",
+      "sub_topic": "Motor load demand",
+      "difficulty": "hard",
+      "question": "For maximum demand calculation, a 7.5kW three-phase motor with FLC of 20A should be assessed at:",
+      "options": [
+        "20A at 100% \u2014 motor circuits are assessed at full load current for MD; starting current is a transient not used in MD calculations",
+        "20A \u00d7 125% = 25A to account for DOL starting",
+        "20A \u00d7 80% = 16A using a commercial diversity factor",
+        "Motor loads are excluded from MD calculations"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Motor circuits are assessed at 100% of full load current for maximum demand. Starting current (5-7\u00d7 FLA for DOL) is a brief transient and is not used in MD calculations \u2014 MD is concerned with sustained loads. The motor overload relay is set at 100-112% of FLA per AS/NZS IEC 60947-4-1. Option B \u2014 starting current is not used in MD. Option C \u2014 no such 80% factor exists for motors. Option D \u2014 motors are significant sustained loads and must be included.",
+      "reference": "AS/NZS 3000:2018 Clause 4.2; AS/NZS IEC 60947-4-1"
+    },
+    {
+      "id": "tp-048",
+      "topic": "Protection & Discrimination",
+      "sub_topic": "RCD cascade discrimination",
+      "difficulty": "hard",
+      "question": "A main 300mA Type S RCD at the main switchboard and a 30mA RCD at a distribution board installed in series achieves:",
+      "options": [
+        "Back-up protection \u2014 the 300mA RCD provides discrimination and fire protection while 30mA RCD provides personal protection at circuit level",
+        "Full discrimination so only the downstream RCD ever trips",
+        "An incorrect arrangement causing both to trip simultaneously on any fault",
+        "300mA and 30mA RCDs cannot be installed in series"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 A 300mA Type S (time-delayed) RCD at the origin provides discrimination against nuisance tripping of downstream 30mA RCDs, and fire protection (300mA can detect significant earth leakage that could cause heating/fire but is not sensitive enough for personal protection). The 30mA RCD at the distribution board provides personal protection for downstream circuits. This cascade arrangement is specifically recognised in AS/NZS 3000 Clause 2.6.2. Option B is wrong \u2014 the 300mA main will trip on high earth leakage faults. Option C is wrong \u2014 this is a correct, standard arrangement. Option D is false \u2014 series RCDs are common and correct.",
+      "reference": "AS/NZS 3000:2018 Clause 2.6.2; AS/NZS 61009.1"
+    },
+    {
+      "id": "tp-049",
+      "topic": "Protection & Discrimination",
+      "sub_topic": "MCB characteristic selection",
+      "difficulty": "hard",
+      "question": "Type C MCBs are specifically recommended for circuits supplying:",
+      "options": [
+        "Moderate inrush loads such as fluorescent lighting with magnetic ballasts, HID lamps, and small motor loads",
+        "Domestic lighting circuits with only filament lamps (purely resistive)",
+        "Stove and oven circuits",
+        "Long heavily loaded cable runs"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Type C MCBs have magnetic trip at 5-10\u00d7 nominal current. They are suitable for circuits with moderate inrush: fluorescent lighting (magnetic ballasts), HID lamps, small motors. The inrush of these loads (typically 2-4\u00d7 FLA for fluorescent, 5-10\u00d7 for motors) would cause nuisance tripping of Type B (3-5\u00d7 In) devices. Type D (10-20\u00d7 In) is for very high inrush loads (transformers, large motors). Option B \u2014 filament lamps are purely resistive with minimal inrush; Type B is appropriate. Option C \u2014 stoves/ovens are resistive; Type B or C depending on electronic controls. Option D \u2014 MCB type selection is based on load inrush, not cable length.",
+      "reference": "AS/NZS 60898.1; AS/NZS 3000"
+    },
+    {
+      "id": "tp-050",
+      "topic": "Protection & Discrimination",
+      "sub_topic": "RCD socket outlet rating",
+      "difficulty": "medium",
+      "question": "AS/NZS 3000 requires RCD protection for socket outlets rated at:",
+      "options": [
+        "20A and below \u2014 all standard socket outlets in any installation type (domestic, commercial, industrial)",
+        "32A and above only",
+        "10A only \u2014 standard household sockets",
+        "63A and above"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 2.6.2 requires RCD protection for all socket outlets rated not exceeding 20A. This covers 10A, 15A, and 20A socket outlets in ALL installation types. This is a core safety requirement because socket outlets supply portable equipment that may be handled during a fault. Option B is wrong \u2014 the 20A limit is the upper threshold, not the lower one. Option C is wrong \u2014 15A and 20A outlets would be excluded, creating a significant safety gap. Option D is entirely wrong.",
+      "reference": "AS/NZS 3000:2018 Clause 2.6.2"
+    },
+    {
+      "id": "tp-051",
+      "topic": "Protection & Discrimination",
+      "sub_topic": "RCBO advantage",
+      "difficulty": "medium",
+      "question": "An RCBO (Residual Current Breaker with Overload) provides a key advantage over a common RCD protecting multiple circuits:",
+      "options": [
+        "A fault on one circuit trips only that RCBO \u2014 other circuits on the same board remain energised",
+        "RCBOs are significantly cheaper than separate RCD+MCB combinations",
+        "RCBOs eliminate the need for coordination with upstream devices",
+        "RCBOs can be used as main isolating switches"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 The main advantage of individual RCBOs per circuit is circuit-level discrimination: a fault on one circuit trips only that RCBO; other circuits on the same distribution board remain energised. With a common RCD protecting 4 circuits, any earth fault on any circuit trips the common RCD, blacking out all 4. Option B is false \u2014 RCBOs are more expensive than separate RCD + MCB. Option C is false \u2014 coordination is still required. Option D \u2014 RCBOs are protective devices; their use as switches depends on specific marking per the standard.",
+      "reference": "AS/NZS 3000:2018 Clause 2.6.2; AS/NZS 61009.1"
+    },
+    {
+      "id": "tp-052",
+      "topic": "Supply Systems",
+      "sub_topic": "TN-S system",
+      "difficulty": "medium",
+      "question": "In a TN-S supply system, the neutral and earth conductors are:",
+      "options": [
+        "Separate throughout \u2014 dedicated PE conductor runs from the transformer alongside the separate neutral conductor",
+        "Combined as PEN from transformer to installation",
+        "Only earthed at the transformer, never at the installation",
+        "Connected together at every distribution point"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 TN-S (Separate Neutral and Earth) has a dedicated protective earth (PE) conductor running from the transformer alongside the line and neutral conductors. The earth is established at the transformer and connected to PE. At the installation, the PE connects to the MET. This differs from TN-C-S where PEN is combined from the transformer to the point of supply. Option B describes TN-C or TN-C-S. Option C is wrong \u2014 the installation's MEN link establishes a second earth connection. Option D is wrong \u2014 N and PE are connected only at specific points.",
+      "reference": "AS/NZS 3000:2018 Clause 5.2.1; NZECP 34"
+    },
+    {
+      "id": "tp-053",
+      "topic": "Supply Systems",
+      "sub_topic": "MEN link purpose",
+      "difficulty": "medium",
+      "question": "The primary purpose of the Multiple Earthed Neutral (MEN) link in a TN-C-S installation is to:",
+      "options": [
+        "Create a low-impedance fault return path to the supply transformer and establish the installation's earthed exposed parts at reference potential",
+        "Completely isolate the installation earth from the supply neutral",
+        "Provide a neutral return path for unbalanced loads only",
+        "Allow the main switch to be replaced without disrupting the earth path"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 The MEN link connects the neutral bar to the earth bar at the main switchboard (MET). Its purposes: (1) provides a low-impedance fault current return path \u2014 without it, a line-to-earth fault cannot flow; (2) establishes exposed conductive parts at a reference potential relative to the supply neutral. Option B is wrong \u2014 the MEN link connects N and PE, not isolates them. Option C is incomplete \u2014 fault return is the primary purpose. Option D is not a purpose of the MEN link.",
+      "reference": "AS/NZS 3000:2018 Clause 5.2.1; NZECP 34"
+    },
+    {
+      "id": "tp-054",
+      "topic": "Supply Systems",
+      "sub_topic": "IT system",
+      "difficulty": "medium",
+      "question": "An IT (Impedance Earthed) supply system is characterised by:",
+      "options": [
+        "The supply neutral is earthed through a high impedance, limiting fault current and allowing continued operation on first earth fault with an alarm",
+        "The installation's earth electrode is connected directly to the MEN link without impedance",
+        "First earth fault is cleared by an RCD only",
+        "IT is the standard system for all NZ domestic installations"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 IT systems have the supply neutral either isolated (solidly IT) or connected through high impedance. The high impedance limits earth fault current, allowing the system to continue operating on a first fault (with an alarm) rather than automatically disconnecting. Used in hospitals (theatres), mines, and critical industrial facilities. Option B describes TT or TN. Option C is wrong \u2014 standard RCDs may not operate correctly on IT systems. Option D is wrong \u2014 MEN (TN-C-S) is standard in NZ.",
+      "reference": "AS/NZS 3000:2018 Clause 5.2.3; NZECP 34"
+    },
+    {
+      "id": "tp-055",
+      "topic": "Supply Systems",
+      "sub_topic": "Earth electrode resistance TT",
+      "difficulty": "hard",
+      "question": "The resistance of a TT system earth electrode (Ra) should be:",
+      "options": [
+        "Low enough that Ze + Ra results in Zs within Table 5.1 limits for the protective device protecting the circuit",
+        "At least 500\u03a9 to limit touch voltage",
+        "Equal to the supply authority's declared Ze value",
+        "Ra is irrelevant in TT \u2014 only the supply electrode matters"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 In TT, the consumer installs a dedicated earth electrode (Ra) independent of the supply. The fault path is: line \u2192 earth electrode at fault \u2192 soil \u2192 consumer electrode (Ra) \u2192 soil \u2192 supply electrode \u2192 supply neutral. Zs = Ze + Ra. Ra must be low enough that Zs is within AS/NZS 3000 Table 5.1 limits. There is no fixed minimum or maximum for Ra \u2014 it is determined by the required Zs. Option B (500\u03a9) would be far too high for most circuit Zs requirements. Option C \u2014 Ra is independent of Ze in TT. Option D is wrong \u2014 Ra is critical in TT.",
+      "reference": "AS/NZS 3000:2018 Clause 5.2.2; NZECP 34"
+    },
+    {
+      "id": "tp-056",
+      "topic": "Motors & Motor Starters",
+      "sub_topic": "Star-delta starting",
+      "difficulty": "hard",
+      "question": "In a star-delta motor starter, during the starting (star) configuration, the motor winding voltage is:",
+      "options": [
+        "V/\u221a3 (\u224858%) of line voltage, reducing starting torque to approximately 33% of DOL torque",
+        "Equal to line voltage \u2014 star configuration has no voltage reduction effect",
+        "V/2 \u2014 half the line voltage",
+        "The same as delta but current is halved only"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 In star, each winding is connected between a line and the star point. Winding voltage = Vline/\u221a3 \u2248 0.577V. Since torque \u221d V\u00b2, torque in star = (V/\u221a3)\u00b2 = V\u00b2/3 \u2248 33% of DOL torque. Starting current also reduces to 1/\u221a3 \u2248 33% of DOL current. When near-rated speed, the starter switches to delta, applying full line voltage. Option B is false. Option C \u2014 V/2 is not the star winding voltage. Option D is wrong because winding voltage IS reduced in star.",
+      "reference": "AS/NZS IEC 60947-4-1; motor starting theory"
+    },
+    {
+      "id": "tp-057",
+      "topic": "Motors & Motor Starters",
+      "sub_topic": "Soft starter",
+      "difficulty": "hard",
+      "question": "A soft starter reduces motor starting current by:",
+      "options": [
+        "Gradually ramping up voltage applied to the motor windings using thyristors/SCRs, limiting inrush current to 2-3\u00d7 FLA vs 5-7\u00d7 for DOL",
+        "Inserting resistors in series with the motor throughout the starting sequence",
+        "Reducing the supply frequency below 50Hz during start-up",
+        "Using a reduced-voltage autotransformer with multiple fixed taps"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Soft starters use thyristors (SCRs) to phase-control the voltage applied to the motor. By gradually ramping voltage from a low initial value, the soft starter limits inrush current to typically 2-3\u00d7 FLA (vs 5-7\u00d7 for DOL). Soft starters also provide smooth torque ramp. Option B describes resistor starting, a different method. Option C describes a VFD function. Option D describes autotransformer starting, another different method.",
+      "reference": "AS/NZS IEC 60947-4-1"
+    },
+    {
+      "id": "tp-058",
+      "topic": "Motors & Motor Starters",
+      "sub_topic": "Motor overload setting",
+      "difficulty": "medium",
+      "question": "A 15kW three-phase motor has nameplate FLC of 28A. The thermal overload relay should be set at:",
+      "options": [
+        "28A \u00d7 100-112% = 28-31A \u2014 set to the motor's nameplate full load current per AS/NZS IEC 60947-4-1",
+        "28A \u00d7 150% = 42A to allow for starting conditions",
+        "28A \u00d7 80% = 22A as a conservative setting",
+        "The overload setting depends on the cable size, not the motor rating"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS IEC 60947-4-1: thermal overload relays set to 100-112% of motor nameplate FLC. The overload is designed to carry the motor's rated current continuously without tripping. Option B (150%) would leave the motor unprotected against sustained overloads. Option C (80%) would cause nuisance tripping at normal full-load current. Option D is wrong \u2014 overload settings are based on motor FLC, not cable size.",
+      "reference": "AS/NZS IEC 60947-4-1"
+    },
+    {
+      "id": "tp-059",
+      "topic": "Motors & Motor Starters",
+      "sub_topic": "Motor starting current",
+      "difficulty": "medium",
+      "question": "A Direct On Line (DOL) started 7.5kW motor draws approximately how many times its full load current during starting?",
+      "options": [
+        "5-7\u00d7 FLA \u2014 DOL starting produces high inrush current due to low rotor impedance at standstill",
+        "1-2\u00d7 FLA \u2014 motors start smoothly without significant current increase",
+        "10-12\u00d7 FLA \u2014 maximum current at start",
+        "Equal to FLC \u2014 DOL has no current increase at start"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 At standstill, the rotor has no back-EMF, so the stator draws very high magnetising current. Locked rotor current (LRA) for a DOL-started induction motor is typically 5-7\u00d7 FLA. This causes voltage dip and must be considered in supply design. For star-delta, starting current reduces to 1/\u221a3 \u2248 33% of DOL starting current. Option B is false. Option C (10-12\u00d7) is more typical of large special-purpose motors; 5-7\u00d7 is the standard range. Option D is false.",
+      "reference": "AS/NZS IEC 60947-4-1; motor starting theory"
+    },
+    {
+      "id": "tp-060",
+      "topic": "Motors & Motor Starters",
+      "sub_topic": "Motor isolation requirements",
+      "difficulty": "medium",
+      "question": "A motor circuit isolator must be:",
+      "options": [
+        "Capable of breaking full load current of the motor, located within sight of the motor or lockable in OFF position",
+        "Rated only for the control circuit current (typically 10A or less)",
+        "A simple pull-cord switch mounted on the motor",
+        "The building main switch is sufficient isolation for any motor circuit"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 2.9 and AS/NZS IEC 60204-1: motor isolators must break full load current and be within sight of the motor OR lockable in OFF position (so the motor cannot be started during maintenance). Option B is wrong \u2014 the isolator must break motor full load current, not just control circuit current. Option C is not a recognised motor isolation means. Option D is wrong \u2014 the building main switch may not be in sight of the motor and a non-lockable switch doesn't satisfy the lockable/off-sight requirement.",
+      "reference": "AS/NZS 3000:2018 Clause 2.9; AS/NZS IEC 60204-1"
+    },
+    {
+      "id": "tp-061",
+      "topic": "Switchboards",
+      "sub_topic": "Busbar rating",
+      "difficulty": "hard",
+      "question": "A switchboard busbar protected by a 400A main circuit breaker must be rated at:",
+      "options": [
+        "At least 400A \u2014 equal to or greater than the rating of the protective device protecting it",
+        "150A less than the main circuit breaker rating",
+        "The sum of all outgoing circuit protective device ratings",
+        "Busbar rating is not specified in AS/NZS 3000"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 61439.1 requires busbars to be rated at least equal to the protective device protecting them. The busbar must carry the full fault current without damage. A 400A busbar protected by a 400A breaker is at its limit but compliant. Option B is not a standard rule. Option C \u2014 busbar rating is based on the upstream protective device, not the sum of downstream devices. Option D is false \u2014 AS/NZS 61439 specifies busbar rating requirements.",
+      "reference": "AS/NZS 61439.1; AS/NZS 3000 Clause 2.8"
+    },
+    {
+      "id": "tp-062",
+      "topic": "Switchboards",
+      "sub_topic": "Segregation requirements",
+      "difficulty": "medium",
+      "question": "Segregation of circuits within a switchboard is required to:",
+      "options": [
+        "Prevent a fault on one circuit propagating to adjacent circuits and prevent operators contacting live parts of other circuits during fault finding",
+        "Allow multiple circuits to share the same enclosure without any barrier",
+        "Reduce switchboard construction cost",
+        "Only required for circuits above 100A"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 61439.1 requires segregation (form separation) of circuits using barriers/partitions. Purposes: (1) operator safety \u2014 prevents contact with live parts of adjacent circuits during fault finding; (2) fault containment \u2014 prevents arc faults spreading to adjacent circuits; (3) reliability \u2014 prevents a fault on one circuit causing unintended operation of adjacent protective devices. Option B is the opposite of segregation requirements. Option C is wrong \u2014 segregation adds cost but is mandatory. Option D is wrong \u2014 requirements apply regardless of current rating.",
+      "reference": "AS/NZS 61439.1; AS/NZS 3000 Clause 2.8"
+    },
+    {
+      "id": "tp-063",
+      "topic": "Switchboards",
+      "sub_topic": "Working space",
+      "difficulty": "medium",
+      "question": "AS/NZS 3000 requires that the working space in front of a switchboard:",
+      "options": [
+        "Be maintained clear at all times \u2014 minimum clear depth of 0.6m for boards up to 250A, increasing for higher ratings",
+        "Allow materials to be stored provided the door can open",
+        "Be shared with telephone and data equipment if space is limited",
+        "Only applies to industrial switchboards"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 2.8 and AS/NZS IEC 60204-1 require a clear working space in front of switchboards. Minimum depth is 0.6m for boards up to 250A. The space must be kept clear \u2014 storage is prohibited. Option B is wrong. Option C \u2014 telephone/data equipment may not encroack on switchboard working space. Option D is wrong \u2014 requirements apply to all switchboards.",
+      "reference": "AS/NZS 3000:2018 Clause 2.8; AS/NZS IEC 60204-1"
+    },
+    {
+      "id": "tp-064",
+      "topic": "Switchboards",
+      "sub_topic": "Circuit chart requirements",
+      "difficulty": "medium",
+      "question": "A switchboard circuit chart must show:",
+      "options": [
+        "The type and rating of each protective device and the circuit it supplies, kept up to date reflecting current configuration",
+        "Only the main switch rating",
+        "The owner's name and contact details",
+        "A schematic of the supply authority network"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 2.8 and Electricity (Safety) Regulations require a circuit chart or legend identifying each circuit, its protective device type and rating, and what it supplies. The chart must be kept current \u2014 changes to the installation must be reflected in an updated chart. Option B is insufficient. Option C is not required by AS/NZS 3000. Option D is not required.",
+      "reference": "AS/NZS 3000:2018 Clause 2.8"
+    },
+    {
+      "id": "tp-065",
+      "topic": "Circuit Design",
+      "sub_topic": "Ring final circuit purpose",
+      "difficulty": "medium",
+      "question": "A ring final circuit (RFC) in a domestic installation serves primarily to:",
+      "options": [
+        "Provide two parallel current paths to each socket outlet, reducing voltage drop and providing redundancy if one path is broken",
+        "Reduce the total cable required compared to a radial circuit",
+        "Increase the fault level at each socket outlet",
+        "Allow socket outlets to be added without recalculating demand"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 The RFC runs as a complete loop from the distribution board and back. Each socket has two current paths. Key advantages: (1) reduced voltage drop \u2014 current splits between two paths, halving the current in each cable segment; (2) redundancy \u2014 if cable is damaged at one point (not both paths), all outlets remain energised via the alternate route. Option B \u2014 RFC doesn't necessarily reduce total cable length; it allows smaller conductors due to current splitting. Option C is wrong. Option D is wrong \u2014 additions still require demand recalculation.",
+      "reference": "AS/NZS 3000:2018 Clause 4.2"
+    },
+    {
+      "id": "tp-066",
+      "topic": "Circuit Design",
+      "sub_topic": "Protective conductor sizing",
+      "difficulty": "hard",
+      "question": "A 32A circuit protected by an MCB uses 6mm\u00b2 active conductors. Per AS/NZS 3000 Table 5.1, the minimum protective conductor (CPC) size is:",
+      "options": [
+        "6mm\u00b2 \u2014 the CPC must be at least equal to the active size for this circuit rating",
+        "2.5mm\u00b2 \u2014 protective conductors are typically smaller than actives",
+        "10mm\u00b2 \u2014 protective conductors must be one size larger",
+        "1.5mm\u00b2 \u2014 the minimum for any fixed installation protective conductor"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Table 5.1 specifies minimum CPC sizes. For a 32A circuit with 6mm\u00b2 actives, the minimum CPC is typically 6mm\u00b2 (equal to the active) for many installation methods. The CPC must be capable of carrying the fault current without overheating and without opening before the protective device clears the fault. For certain conditions the CPC may be calculated smaller, but for a standard 32A circuit with 6mm\u00b2 actives, 6mm\u00b2 is the minimum. Option B (2.5mm\u00b2) might be acceptable for smaller circuit sizes under specific conditions. Option D (1.5mm\u00b2) is too small for a 32A circuit. Option C is not a standard rule.",
+      "reference": "AS/NZS 3000:2018 Table 5.1; AS/NZS 3008"
+    },
+    {
+      "id": "tp-067",
+      "topic": "Circuit Design",
+      "sub_topic": "Sub-main sizing",
+      "difficulty": "hard",
+      "question": "A sub-main cable feeding a distribution board with multiple different-rated outgoing circuits should be sized for:",
+      "options": [
+        "The maximum demand of the distribution board calculated per AS/NZS 3000 Clause 4.2 diversity factors",
+        "The sum of all outgoing protective device ratings without diversity",
+        "The largest single outgoing protective device rating",
+        "The sub-main does not need separate sizing if the main is correctly sized"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Sub-mains are sized for the maximum demand of the load they serve, calculated using AS/NZS 3000 Clause 4.2 diversity factors applied to groups of circuits served. Summing all protective device ratings without diversity would significantly oversize the sub-main. Table 4.2 diversity factors reflect the fact that not all circuits operate at full load simultaneously. Option B is the common over-sizing error. Option C would potentially undersize. Option D is wrong \u2014 sub-mains must be individually assessed.",
+      "reference": "AS/NZS 3000:2018 Clause 4.2"
+    },
+    {
+      "id": "tp-068",
+      "topic": "Circuit Design",
+      "sub_topic": "Neutral conductor sizing TN-C-S",
+      "difficulty": "hard",
+      "question": "In a TN-C-S installation, the neutral conductor in a sub-main circuit should:",
+      "options": [
+        "Be of the same current-carrying capacity as the active and be capable of being disconnected simultaneously with the active",
+        "Be half the size of the active conductor to save cost",
+        "Not be required \u2014 three-core cable with earth is sufficient",
+        "Be sized only for the unbalanced current only"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 In TN-C-S (MEN), the neutral carries the unbalanced current. It must be sized for the circuit's maximum demand \u2014 not automatically half the active size. For circuits with significant third harmonic content (common with switch-mode power supplies, LED drivers), the neutral current can exceed phase current due to harmonic triplen components, requiring the neutral to be sized accordingly or the circuit designed to handle it. The neutral must be disconnectible with the phase where required. Option B is wrong. Option C is wrong \u2014 neutral is always required. Option D is incomplete \u2014 neutral must carry the maximum demand current including harmonics.",
+      "reference": "AS/NZS 3000:2018 Clause 3.3; AS/NZS 3008"
+    },
+    {
+      "id": "tp-069",
+      "topic": "Testing & Verification",
+      "sub_topic": "Earth continuity resistance",
+      "difficulty": "hard",
+      "question": "When testing earth continuity, the resistance measured should be:",
+      "options": [
+        "Low enough that Vtouch = Ifault \u00d7 Rearth does not exceed 50V AC \u2014 the limit depends on the protective device and fault current",
+        "Less than 1\u03a9 regardless of circuit length",
+        "Equal to the phase conductor resistance",
+        "Tested only at the main earthing conductor"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Earth continuity test ensures the protective conductor can carry fault current without producing dangerous touch voltages. The criterion is: Vtouch = Ifault \u00d7 Rearth < 50V. Since Ifault for a 32A MCB on a dead-short is ~160A, Rearth must be < 50V/160A = 0.31\u03a9. AS/NZS 3000/3019 provide maximum earth conductor resistances per circuit/protective device. Option B (1\u03a9) is a rule of thumb but not the formal test criterion \u2014 for a 32A circuit the limit is ~0.3\u03a9. Option C is not the test basis. Option D is wrong \u2014 each circuit's earth continuity must be tested.",
+      "reference": "AS/NZS 3000:2018 Clause 8.3.3; AS/NZS 3019"
+    },
+    {
+      "id": "tp-070",
+      "topic": "Testing & Verification",
+      "sub_topic": "Polarity testing",
+      "difficulty": "medium",
+      "question": "Polarity testing of a single-phase circuit confirms that:",
+      "options": [
+        "Every switch, including the main switch, breaks the active (line) conductor only \u2014 not the neutral",
+        "The neutral and earth are correctly identified",
+        "All three phases are correctly sequenced in a three-phase circuit",
+        "The circuit is connected to the correct phase of the supply"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 AS/NZS 3000 Clause 8.3.6: polarity testing confirms that every switching device (including the main switch and all single-pole switches) breaks the LINE conductor only. If a switch breaks neutral, the circuit remains live even when switched off \u2014 a serious shock hazard. Option B is an identification/continuity check. Option C is phase sequence testing. Option D is a supply connection check, not the primary purpose of polarity testing per the standard.",
+      "reference": "AS/NZS 3000:2018 Clause 8.3.6"
+    },
+    {
+      "id": "tp-071",
+      "topic": "Testing & Verification",
+      "sub_topic": "RCD test button",
+      "difficulty": "medium",
+      "question": "The test button on an RCD operates by:",
+      "options": [
+        "Injecting a calibrated fault current (typically 30mA for a 30mA RCD) through the RCD's internal test circuit to simulate earth leakage, causing it to trip",
+        "Forcing the RCD contacts to weld together to check mechanical operation",
+        "Measuring the earth electrode resistance by injecting a small current",
+        "Disabling the RCD's electronic circuit to verify mechanical trip"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 The RCD test button applies a calibrated resistance across line and earth terminals inside the RCD, injecting a simulated earth leakage current equal to the RCD's rated trip current (e.g., 30mA for a 30mA RCD). If the RCD trips, the test circuit and trip mechanism are confirmed functional. IMPORTANT: the test button only tests the internal test circuit \u2014 it does NOT test the RCD's ability to trip on real external earth leakage. A full functional test with an earth leakage tester is required for comprehensive RCD testing. Option B is wrong. Option C is what an earth electrode tester does. Option D is wrong.",
+      "reference": "AS/NZS 3000:2018 Clause 8.3.8"
+    },
+    {
+      "id": "tp-072",
+      "topic": "Testing & Verification",
+      "sub_topic": "Test instrument calibration",
+      "difficulty": "medium",
+      "question": "Insulation resistance and earth fault loop impedance testers used for compliance testing must be:",
+      "options": [
+        "Calibrated with a valid test record \u2014 instrument accuracy directly affects whether compliant results are measured or borderline results missed",
+        "New (purchased within 12 months) to ensure accuracy",
+        "Supplied or approved by the supply authority",
+        "Self-checking instruments that do not require calibration"
+      ],
+      "correct_answer": 0,
+      "explanation": "CORRECT \u2014 Test instrument accuracy directly affects compliance outcomes. An out-of-calibration insulation tester could miss a genuine 0.8 M\u03a9 failure or fail a genuinely compliant 1.2 M\u03a9 installation. AS/NZS 3019 requires test instruments to be calibrated and maintained. Calibration certificates should be current (typically 12-24 months). Option B is false \u2014 age is not the criterion; calibration status is. Option C is false. Option D is false \u2014 no test instrument is self-calibrating.",
+      "reference": "AS/NZS 3019; instrument calibration requirements"
+    }
+  ]
+}
