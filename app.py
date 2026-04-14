@@ -3,6 +3,7 @@ TradePass Streamlit Frontend
 Wraps the FastAPI backend (port 8000) with a functional UI.
 All study endpoints require JWT auth; token stored in st.session_state.
 """
+import json
 import os
 import streamlit as st
 import requests
@@ -55,6 +56,14 @@ def api_post(path: str, payload: dict = None):
 
 def api_put(path: str, payload: dict = None):
     r = requests.put(f"{BASE_URL}{path}", json=payload, headers=api_headers(), timeout=15)
+    if not r.ok:
+        st.error(f"API error {r.status_code}: {r.text[:200]}")
+        return None
+    return r.json()
+
+
+def api_delete(path: str):
+    r = requests.delete(f"{BASE_URL}{path}", headers=api_headers(), timeout=15)
     if not r.ok:
         st.error(f"API error {r.status_code}: {r.text[:200]}")
         return None
@@ -179,10 +188,10 @@ def play_sound(sound_type: str = "success"):
 # ─────────────────────────────────────────────────────────────────────────────
 
 TOPIC_NAMES = {
-    1: "Knowledge of Trade Instruments", 2: "Securities Taxation",
-    3: "Market Manipulation", 4: "Ethical Conduct", 5: "Corporate Actions",
-    6: "Client Suitability", 7: "Market Regulation", 8: "Asset Segregation",
-    9: "Best Execution", 10: "Insider Trading", 11: "ADR Operations",
+    1: "Voltage Drop", 2: "Fault Loop Impedance",
+    3: "AS/NZS 3000 Application", 4: "Insulation Resistance", 5: "Maximum Demand",
+    6: "RCD/MCB Protection", 7: "Supply Systems", 8: "Motors & Motor Starters",
+    9: "Switchboards", 10: "Protection & Discrimination", 11: "Circuit Design",
 }
 
 
@@ -299,19 +308,9 @@ def copy_results_button(text: str, label: str = "📋 Copy Results"):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 # Initialise session state
 # ─────────────────────────────────────────────────────────────────────────────
-
-for key, default in [
-    ("jwt_token", ""),
-    ("user_id", None),
-    ("display_name", ""),
-    ("email", ""),
-    ("page", "Login"),
-    ("registered", False),
-]:
-    st.set_page_config(key=key, initial_value=default)
-
 
 def _init_state():
     defaults = {
@@ -340,8 +339,8 @@ def sidebar_nav():
             profile = api_get(f"/api/study/profile/{st.session_state['user_id']}")
             if profile:
                 st.success(f"✓ {profile.get('display_name', st.session_state.get('display_name',''))}")
-            pages = ["Dashboard", "Study Session", "Focus Mode", "Exam Mode", "Topic Trends", "Achievements", "History", "Study Plan", "Profile"]
-            icons = ["📊", "📖", "🎯", "📝", "📈", "🏆", "🕐", "📅", "👤"]
+            pages = ["Dashboard", "Study Session", "Focus Mode", "Exam Mode", "Topic Trends", "Achievements", "History", "Study Plan", "Search", "Flagged Questions", "Profile"]
+            icons = ["📊", "📖", "🎯", "📝", "📈", "🏆", "🕐", "📅", "🔍", "📌", "👤"]
         else:
             pages = ["Login"]
             icons = ["🔑"]
@@ -684,6 +683,51 @@ def page_study_session():
             ach_snapshot = api_get(f"/api/study/achievements/{uid}")
             st.session_state["pre_ach_count"] = sum(1 for a in ach_snapshot.get("achievements", []) if a.get("earned")) if ach_snapshot else 0
 
+        # ── SOLO FOCUS: pre-selected question from Flagged/Search page ──────
+        focus_qid = st.session_state.get("study_focus_question_id")
+        if focus_qid:
+            st.info(f"📌 Focusing on a flagged question.")
+            with st.spinner("Loading question…"):
+                q_data = api_get(f"/api/questions/{focus_qid}")
+            if not q_data:
+                st.error("Question not found.")
+                if st.button("← Back"):
+                    del st.session_state["study_focus_question_id"]
+                    st.session_state["page"] = "Dashboard"
+                    st.rerun()
+                return
+            # Pre-load achievement snapshot
+            ach_snapshot = api_get(f"/api/study/achievements/{uid}")
+            st.session_state["pre_ach_count"] = sum(
+                1 for a in ach_snapshot.get("achievements", []) if a.get("earned")
+            ) if ach_snapshot else 0
+            # Build a study_items entry that matches the review-session format
+            topic_map = {
+                1: "Voltage Drop", 2: "Fault Loop Impedance",
+                3: "AS/NZS 3000 Application", 4: "Insulation Resistance",
+                5: "Maximum Demand", 6: "RCD/MCB Protection",
+                7: "Supply Systems", 8: "Motors & Motor Starters",
+                9: "Switchboards", 10: "Protection & Discrimination", 11: "Circuit Design",
+            }
+            topic_id = q_data.get("topic_id")
+            study_item = {
+                "id": q_data["id"],
+                "question_text": q_data.get("question_text", ""),
+                "answer_text": q_data.get("answer_text", ""),
+                "explanation": q_data.get("explanation", ""),
+                "difficulty": q_data.get("difficulty", "medium"),
+                "topic_id": topic_id,
+                "topic_name": topic_map.get(topic_id, f"Topic {topic_id}"),
+            }
+            st.session_state["study_items"] = [study_item]
+            st.session_state["study_idx"] = 0
+            st.session_state["study_answers"] = {}
+            st.session_state["study_phase"] = "question"
+            st.session_state["study_session_id"] = None  # no backend session for solo
+            del st.session_state["study_focus_question_id"]
+            st.rerun()
+            return
+
         if st.button("🚀 Start Session", use_container_width=True):
             with st.spinner("Building your session…"):
                 payload = {"user_id": uid, "limit": session_limit}
@@ -728,28 +772,39 @@ def page_study_session():
             col_topic, col_diff = st.columns(2)
             with col_topic:
                 topic_map = {
-                    1: "Knowledge of Trade Instruments",
-                    2: "Securities Taxation",
-                    3: "Market Manipulation",
-                    4: "Ethical Conduct",
-                    5: "Corporate Actions",
-                    6: "Client Suitability",
-                    7: "Market Regulation",
-                    8: "Asset Segregation",
-                    9: "Best Execution",
-                    10: "Insider Trading",
-                    11: "ADR Operations",
+                    1: "Voltage Drop",
+                    2: "Fault Loop Impedance",
+                    3: "AS/NZS 3000 Application",
+                    4: "Insulation Resistance",
+                    5: "Maximum Demand",
+                    6: "RCD/MCB Protection",
+                    7: "Supply Systems",
+                    8: "Motors & Motor Starters",
+                    9: "Switchboards",
+                    10: "Protection & Discrimination",
+                    11: "Circuit Design",
                 }
                 st.caption(f"Topic: {topic_map.get(topic_id, f'Topic {topic_id}')}")
             with col_diff:
                 st.caption(f"Difficulty: {difficulty}")
 
-            # Show/hide answer toggle
-            with st.expander("📖 Show Answer"):
-                st.success(item.get("answer_text", "No answer provided."))
-                if explanation:
-                    st.info(f"💡 {explanation}")
+            # Parse options JSON array from the API
+            options_raw = item.get("options", "[]")
+            try:
+                options = json.loads(options_raw)
+            except Exception:
+                options = []
+            # Fallback to individual option fields if no JSON array
+            if not options:
+                for key in ["option_a", "option_b", "option_c", "option_d"]:
+                    if item.get(key):
+                        options.append(item[key])
 
+            # A/B/C/D answer selection — same UX as Exam Mode
+            answer_key = f"study_a_{idx}"
+            user_answer = st.radio("Select your answer:", options, key=answer_key, index=None)
+
+            # Grading: Knew it / Didnt know
             user_guess = st.radio(
                 "Did you know it?",
                 ["Knew it ✓", "Didn't know ✗"],
@@ -757,17 +812,99 @@ def page_study_session():
                 index=None,
             )
 
+            # Show answer + explanation after attempting
+            with st.expander("📖 Show Answer & Explanation"):
+                st.success(item.get("answer_text", "No answer provided."))
+                if explanation:
+                    st.info(f"💡 {explanation}")
+
+            # Flag for exam prep
+            flag_state = api_get(f"/api/study/questions/{q_id}/flag?user_id={uid}")
+            is_flagged = flag_state.get("flagged", False) if flag_state else False
+            flag_btn_label = "⭐ Flagged — Unflag" if is_flagged else "☆ Flag for Exam"
+            if st.button(flag_btn_label, use_container_width=True, key=f"flag_{q_id}"):
+                api_post(f"/api/study/questions/{q_id}/flag", {"user_id": uid})
+                st.rerun()
+
             c1, c2 = st.columns(2)
             with c1:
                 next_label = "Next →" if idx < total - 1 else "Finish Session"
                 if st.button(next_label, use_container_width=True):
-                    st.session_state["study_answers"][q_id] = (user_guess == "Knew it ✓")
-                    st.session_state["study_idx"] += 1
-                    st.rerun()
+                    correct = user_guess == "Knew it ✓"
+                    st.session_state["study_answers"][q_id] = correct
+                    # Solo mode: grade immediately via solo endpoint
+                    if st.session_state.get("study_session_id") is None and idx == total - 1:
+                        quality = 4 if correct else 1
+                        solo_result = api_post(
+                            f"/api/study/solo/{q_id}",
+                            {"user_id": uid, "quality": quality},
+                        )
+                        st.session_state["solo_result"] = solo_result
+                        st.session_state["study_phase"] = "solo_results"
+                        st.rerun()
+                    else:
+                        st.session_state["study_idx"] += 1
+                        st.rerun()
             with c2:
                 if st.button("↩️ End Early", use_container_width=True):
                     st.session_state["study_phase"] = "results"
                     st.rerun()
+
+    # ── SOLO RESULT (one question, graded inline) ────────────────────────────
+    elif phase == "solo_results":
+        st.title("📌 Solo Study Result")
+        solo = st.session_state.get("solo_result")
+        if solo:
+            correct = solo.get("correct", False)
+            quality = solo.get("quality", 0)
+            acc = 100.0 if correct else 0.0
+            topic_name = solo.get("topic_name", "")
+            st.success(f"{'✅ Correct!' if correct else '❌ Not quite.'}")
+            col1, col2 = st.columns(2)
+            col1.metric("Topic", topic_name)
+            col2.metric("Difficulty", (solo.get("difficulty") or "medium").capitalize())
+            st.divider()
+            st.markdown(f"**Q:** {solo.get('question_text', '')}")
+            st.success(f"**Answer:** {solo.get('answer_text', '')}")
+            if solo.get("explanation"):
+                st.info(f"💡 {solo.get('explanation')}")
+            st.divider()
+            st.caption(f"SM-2: EF {solo.get('easiness_factor_before', 0):.2f} → **{solo.get('easiness_factor_after', 0):.2f}** | "
+                       f"Interval: {solo.get('interval_before', 0)}d → **{solo.get('interval_after', 0)}d**")
+            # Achievements check
+            uid2 = st.session_state["user_id"]
+            pre_count = st.session_state.get("pre_ach_count", 0)
+            ach_data = api_get(f"/api/study/achievements/{uid2}")
+            earned_now = sum(1 for a in ach_data.get("achievements", []) if a.get("earned")) if ach_data else 0
+            if earned_now > pre_count:
+                st.balloons()
+                st.success(f"🎉 You earned {earned_now - pre_count} new achievement{'s' if earned_now - pre_count > 1 else ''}!")
+            st.session_state["pre_ach_count"] = earned_now
+            play_sound("success" if correct else "fail")
+            # Share block
+            ts = datetime.now().isoformat()
+            summary = session_summary(
+                "Solo Study", ts, acc, acc,
+                [topic_name], 1 if correct else 0, 1, correct
+            )
+            st.markdown("**📋 Share Result**")
+            copy_button("Copy Result", summary)
+        else:
+            st.info("No result data found.")
+        if st.button("← Back to Flagged Questions"):
+            for k in ["study_phase", "study_session_id", "study_items", "study_idx", "study_answers"]:
+                st.session_state[k] = [] if k in ("study_items",) else {} if k in ("study_answers",) else "setup"
+            if "solo_result" in st.session_state:
+                del st.session_state["solo_result"]
+            st.session_state["page"] = "Flagged Questions"
+            st.rerun()
+        if st.button("📊 Go to Dashboard"):
+            for k in ["study_phase", "study_session_id", "study_items", "study_idx", "study_answers"]:
+                st.session_state[k] = [] if k in ("study_items",) else {} if k in ("study_answers",) else "setup"
+            if "solo_result" in st.session_state:
+                del st.session_state["solo_result"]
+            st.session_state["page"] = "Dashboard"
+            st.rerun()
 
     # ── RESULTS ──────────────────────────────────────────────────────────────
     elif phase == "results":
@@ -876,17 +1013,17 @@ def page_exam_mode():
             for t in priority_data["topics"]:
                 topic_acc_map[t["topic_id"]] = t.get("exam_accuracy_pct")
         topic_id_to_name = {
-            1: "Knowledge of Trade Instruments",
-            2: "Securities Taxation",
-            3: "Market Manipulation",
-            4: "Ethical Conduct",
-            5: "Corporate Actions",
-            6: "Client Suitability",
-            7: "Market Regulation",
-            8: "Asset Segregation",
-            9: "Best Execution",
-            10: "Insider Trading",
-            11: "ADR Operations",
+            1: "Voltage Drop",
+            2: "Fault Loop Impedance",
+            3: "AS/NZS 3000 Application",
+            4: "Insulation Resistance",
+            5: "Maximum Demand",
+            6: "RCD/MCB Protection",
+            7: "Supply Systems",
+            8: "Motors & Motor Starters",
+            9: "Switchboards",
+            10: "Protection & Discrimination",
+            11: "Circuit Design",
         }
         topic_ids = list(range(1, 12))
         selected_topics = st.multiselect(
@@ -965,10 +1102,10 @@ def page_exam_mode():
         q_text = q.get("question_text", "")
 
         topic_map = {
-            1: "Knowledge of Trade Instruments", 2: "Securities Taxation",
-            3: "Market Manipulation", 4: "Ethical Conduct", 5: "Corporate Actions",
-            6: "Client Suitability", 7: "Market Regulation", 8: "Asset Segregation",
-            9: "Best Execution", 10: "Insider Trading", 11: "ADR Operations",
+            1: "Voltage Drop", 2: "Fault Loop Impedance",
+            3: "AS/NZS 3000 Application", 4: "Insulation Resistance", 5: "Maximum Demand",
+            6: "RCD/MCB Protection", 7: "Supply Systems", 8: "Motors & Motor Starters",
+            9: "Switchboards", 10: "Protection & Discrimination", 11: "Circuit Design",
         }
 
         st.markdown(f"**Q{idx + 1}.** {q_text}")
@@ -1058,10 +1195,10 @@ def page_exam_mode():
             topics_covered = []
             for b in breakdown:
                 t_name = {
-                    1: "Knowledge of Trade Instruments", 2: "Securities Taxation",
-                    3: "Market Manipulation", 4: "Ethical Conduct", 5: "Corporate Actions",
-                    6: "Client Suitability", 7: "Market Regulation", 8: "Asset Segregation",
-                    9: "Best Execution", 10: "Insider Trading", 11: "ADR Operations",
+                    1: "Voltage Drop", 2: "Fault Loop Impedance",
+                    3: "AS/NZS 3000 Application", 4: "Insulation Resistance", 5: "Maximum Demand",
+                    6: "RCD/MCB Protection", 7: "Supply Systems", 8: "Motors & Motor Starters",
+                    9: "Switchboards", 10: "Protection & Discrimination", 11: "Circuit Design",
                 }.get(b.get("topic_id"), f"Topic {b.get('topic_id')}")
                 pct = b.get("accuracy_pct", 0)
                 topics_covered.append(t_name)
@@ -1114,17 +1251,17 @@ def page_focus_mode():
     phase = st.session_state["focus_phase"]
 
     topic_map = {
-        1: "Knowledge of Trade Instruments",
-        2: "Securities Taxation",
-        3: "Market Manipulation",
-        4: "Ethical Conduct",
-        5: "Corporate Actions",
-        6: "Client Suitability",
-        7: "Market Regulation",
-        8: "Asset Segregation",
-        9: "Best Execution",
-        10: "Insider Trading",
-        11: "ADR Operations",
+        1: "Voltage Drop",
+        2: "Fault Loop Impedance",
+        3: "AS/NZS 3000 Application",
+        4: "Insulation Resistance",
+        5: "Maximum Demand",
+        6: "RCD/MCB Protection",
+        7: "Supply Systems",
+        8: "Motors & Motor Starters",
+        9: "Switchboards",
+        10: "Protection & Discrimination",
+        11: "Circuit Design",
     }
 
     # ── SETUP ────────────────────────────────────────────────────────────────
@@ -1222,6 +1359,14 @@ def page_focus_mode():
         # Show explanation toggle
         with st.expander("💡 Show Explanation"):
             st.info(explanation if explanation else "No explanation available.")
+
+        # Flag for exam prep
+        flag_state = api_get(f"/api/study/questions/{q_id}/flag?user_id={uid}")
+        is_flagged = flag_state.get("flagged", False) if flag_state else False
+        flag_btn_label = "⭐ Flagged — Unflag" if is_flagged else "☆ Flag for Exam"
+        if st.button(flag_btn_label, use_container_width=True, key=f"flag_{q_id}"):
+            api_post(f"/api/study/questions/{q_id}/flag", {"user_id": uid})
+            st.rerun()
 
         c1, c2 = st.columns(2)
         with c1:
@@ -1361,11 +1506,17 @@ def page_topic_trends():
             attempts = t.get("attempts_count", 0)
             trend = t.get("trend", "stable")
             trend_icon = {"improving": "↗️", "declining": "↘️", "stable": "→"}.get(trend, "—")
-            st.write(
-                f"**{t['name']}** {trend_icon}  "
-                f"Current: {fmt_pct(cur)} | Best: {fmt_pct(best)} | "
-                f"Attempts: {attempts} | Trend: {trend.capitalize()}"
-            )
+            tid = t.get("topic_id")
+            with st.container():
+                st.write(
+                    f"**{t['name']}** {trend_icon}  "
+                    f"Current: {fmt_pct(cur)} | Best: {fmt_pct(best)} | "
+                    f"Attempts: {attempts} | Trend: {trend.capitalize()}"
+                )
+                if st.button(f"📋 View Question History →", key=f"qhist_{tid}", use_container_width=True):
+                    st.session_state["qhist_topic_id"] = tid
+                    st.session_state["page"] = "_qhist_modal"
+                    st.rerun()
 
     with col2:
         # Best accuracy bar
@@ -1924,6 +2075,233 @@ def page_study_plan():
         st.caption("All due cards are sourced from your SM-2 review queue.")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# PAGE: Search + Bookmarks
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _toggle_bookmark(question_id: str, currently_bookmarked: bool):
+    """Add or remove a bookmark and rerun."""
+    user_id = st.session_state["user_id"]
+    if currently_bookmarked:
+        api_delete(f"/api/study/bookmarks/{user_id}/{question_id}")
+    else:
+        api_post(f"/api/study/bookmarks/{user_id}", {"question_id": question_id})
+    st.rerun()
+
+
+def page_search():
+    st.title("🔍 Search & Bookmarks")
+    user_id = st.session_state["user_id"]
+
+    # ── Bookmarked questions ──────────────────────────────────────────────
+    bookmarks_resp = api_get(f"/api/study/bookmarks/{user_id}")
+    bookmarks = bookmarks_resp.get("bookmarks", []) if bookmarks_resp else []
+    bookmarked_ids = {b["question_id"] for b in bookmarks}
+
+    tab_saved, tab_search = st.tabs(["💚 Saved Questions", "🔍 Search"])
+
+    with tab_saved:
+        st.subheader(f"Saved Questions ({len(bookmarks)})")
+        if not bookmarks:
+            st.info("No saved questions yet. Use the Search tab to bookmark questions for later.")
+        for b in bookmarks:
+            diff_color = {"hard": "red", "medium": "yellow", "easy": "green"}.get(b.get("difficulty", ""), "gray")
+            with st.container():
+                st.markdown(f"**{b['topic_name']}**")
+                st.caption(b["question_text"][:120] + "..." if len(b.get("question_text", "")) > 120 else b.get("question_text", ""))
+                col1, col2 = st.columns([1, 1])
+                with col1:
+                    diff_label = b.get("difficulty", "medium").capitalize()
+                    st.markdown(f":[{diff_color}][{diff_label}]")
+                with col2:
+                    if st.button(f"❌ Remove", key=f"rem_{b['question_id']}"):
+                        api_delete(f"/api/study/bookmarks/{user_id}/{b['question_id']}")
+                        st.rerun()
+                st.button(f"📖 Start Study Session with this Q →", key=f"study_{b['question_id']}")
+                st.divider()
+
+    with tab_search:
+        q = st.text_input("Search questions…", placeholder="e.g. RCD, switchboard, fault loop", label_visibility="collapsed")
+
+        # Get topics for filter dropdown
+        topics_resp = api_get("/api/topics")
+        topic_options = [("", "All Topics")] + [(str(t["id"]), t["name"]) for t in (topics_resp or [])]
+
+        col_q, col_topic = st.columns([2, 1])
+        with col_q:
+            search_q = st.text_input("Search", q, placeholder="Keyword search…", label_visibility="visible")
+        with col_topic:
+            topic_map = {str(t["id"]): t["name"] for t in (topics_resp or [])}
+            topic_labels = {t["id"]: t["name"] for t in (topics_resp or [])}
+            topic_id_opts = [""] + [str(t["id"]) for t in (topics_resp or [])]
+            topic_map_labels = {str(t["id"]): t["name"] for t in (topics_resp or [])}
+            selected_topic = st.selectbox("Topic", options=[""] + [str(t["id"]) for t in (topics_resp or [])],
+                                          format_func=lambda x: "All Topics" if x == "" else topic_labels.get(int(x) if x else 0, ""),
+                                          label_visibility="collapsed")
+
+        difficulty = st.radio("Difficulty", ["", "easy", "medium", "hard"],
+                              format_func=lambda x: "Any" if x == "" else x.capitalize(),
+                              horizontal=True)
+
+        params = {"user_id": user_id}
+        if search_q:
+            params["q"] = search_q
+        if selected_topic:
+            params["topic_id"] = int(selected_topic)
+        if difficulty:
+            params["difficulty"] = difficulty
+
+        if search_q or selected_topic or difficulty:
+            results_resp = api_get("/api/study/search", params=params)
+            results = results_resp.get("results", []) if results_resp else []
+            st.markdown(f"**{len(results)} result(s)**")
+            for r in results:
+                is_bookmarked = r["question_id"] in bookmarked_ids
+                diff_tag = {"hard": "🔴", "medium": "🟡", "easy": "🟢"}.get(r.get("difficulty", ""), "⚪")
+                with st.container():
+                    st.markdown(f"{diff_tag} **{r['topic_name']}**")
+                    st.text(r["question_text"][:150] + "…" if len(r.get("question_text", "")) > 150 else r.get("question_text", ""))
+                    bookmark_label = "💛 Unbookmark" if is_bookmarked else "⭐ Bookmark"
+                    if st.button(bookmark_label, key=f"bm_{r['question_id']}"):
+                        _toggle_bookmark(r["question_id"], is_bookmarked)
+                    st.divider()
+        else:
+            st.info("Enter a keyword or select a topic/difficulty to search.")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PAGE: Flagged Questions (exam-prep review queue)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def page_flagged():
+    st.title("📌 Flagged Questions")
+    user_id = st.session_state["user_id"]
+
+    flags_resp = api_get(f"/api/study/flags/{user_id}")
+    flagged = flags_resp.get("flagged_questions", []) if flags_resp else []
+
+    if not flagged:
+        st.info("No flagged questions yet. Flag questions during Study Sessions, Focus Mode, or Exam Mode to build your exam-prep queue.")
+        st.caption("Look for the ☆ Flag for Exam button while answering questions.")
+        return
+
+    st.subheader(f"Flagged for Exam ({len(flagged)})")
+    st.markdown("Review these before your next exam. Remove flags once you've mastered them.")
+    st.divider()
+
+    for item in flagged:
+        diff_tag = {"hard": "🔴", "medium": "🟡", "easy": "🟢"}.get(item.get("difficulty", ""), "⚪")
+        diff_label = item.get("difficulty", "medium").capitalize()
+        with st.container():
+            col_hdr = st.columns([3, 1])
+            with col_hdr[0]:
+                st.markdown(f"{diff_tag} **{item['topic_name']}**")
+            with col_hdr[1]:
+                st.markdown(f":blue[{diff_label}]")
+            st.text(item.get("question_text", ""))
+
+            col_btn1, col_btn2 = st.columns([1, 1])
+            with col_btn1:
+                if st.button("⭐ Remove Flag", key=f"unflag_{item['question_id']}"):
+                    api_post(f"/api/study/questions/{item['question_id']}/flag", {"user_id": user_id})
+                    st.rerun()
+            with col_btn2:
+                if st.button("📖 Study This Question →", key=f"study_flag_{item['question_id']}"):
+                    st.session_state["study_focus_question_id"] = item["question_id"]
+                    st.session_state["page"] = "Study Session"
+                    # Reset study session state so it starts fresh
+                    for k in ["study_phase", "study_session_id", "study_items", "study_idx", "study_answers"]:
+                        st.session_state[k] = [] if k in ("study_items",) else {} if k in ("study_answers",) else "setup"
+                    st.rerun()
+            st.divider()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MODAL: Question History (for topic drill-down)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _render_qhist_modal():
+    uid = st.session_state["user_id"]
+    topic_id = st.session_state.get("qhist_topic_id")
+    topic_map = {
+        1: "Voltage Drop",
+        2: "Fault Loop Impedance",
+        3: "AS/NZS 3000 Application",
+        4: "Insulation Resistance",
+        5: "Maximum Demand",
+        6: "RCD/MCB Protection",
+        7: "Supply Systems",
+        8: "Motors & Motor Starters",
+        9: "Switchboards",
+        10: "Protection & Discrimination",
+        11: "Circuit Design",
+    }
+    if not topic_id:
+        st.error("No topic selected.")
+        return
+
+    st.title(f"📋 Question History: {topic_map.get(topic_id, f'Topic {topic_id}')}")
+
+    with st.spinner("Loading question history…"):
+        data = api_get(f"/api/study/topic/{topic_id}/question-history/{uid}")
+
+    if not data:
+        st.info("No question history found for this topic.")
+        if st.button("← Back to Topic Trends"):
+            st.session_state["page"] = "Topic Trends"
+            st.rerun()
+        return
+
+    questions = data.get("questions", [])
+    total = data.get("total", 0)
+    st.caption(f"{total} question{'s' if total != 1 else ''} seen in this topic")
+
+    if not questions:
+        st.info("You haven't answered any questions in this topic yet.")
+    else:
+        for q in questions:
+            qid = q.get("question_id", "?")
+            difficulty = q.get("difficulty", "medium")
+            diff_tag = {"easy": "🟢", "medium": "🟡", "hard": "🔴"}.get(difficulty, "⚪")
+            attempts = q.get("attempt_count", 0)
+            last_result = q.get("last_result", "unknown")
+            last_result_icon = {"correct": "✅", "incorrect": "❌"}.get(last_result, "❓")
+            best_score = q.get("best_score", 0)
+            times_correct = q.get("times_correct", 0)
+            times_incorrect = q.get("times_incorrect", 0)
+            last_attempted = (q.get("last_attempted") or "Never")[:16]
+
+
+            with st.container():
+                st.markdown(
+                    f"**{q.get('question_text', 'No question text')[:100]}{'…' if len(q.get('question_text','')) > 100 else ''}**"
+                )
+                c1, c2, c3, c4, c5 = st.columns(5)
+                c1.markdown(f"{diff_tag} {difficulty.capitalize()}")
+                c2.metric("Attempts", attempts)
+                c3.metric("Last", f"{last_result_icon} {last_attempted[5:]}")
+                c4.metric("Best", fmt_pct(best_score))
+                c5.markdown(f"✅{times_correct} ❌{times_incorrect}")
+
+                # Flag toggle
+                flag_state = api_get(f"/api/study/questions/{qid}/flag?user_id={uid}")
+                is_flagged = flag_state.get("flagged", False) if flag_state else False
+                flag_btn = "⭐ Unflag Question" if is_flagged else "☆ Flag for Exam"
+                col_flag, col_review = st.columns([1, 4])
+                with col_flag:
+                    if st.button(flag_btn, key=f"mqflag_{qid}", use_container_width=True):
+                        api_post(f"/api/study/questions/{qid}/flag", {"user_id": uid})
+                        st.rerun()
+                with col_review:
+                    st.caption("")  # spacer
+                st.divider()
+
+
+    if st.button("← Back to Topic Trends"):
+        st.session_state["page"] = "Topic Trends"
+        st.rerun()
+
+
 def main():
     # Auth guard — all pages except Login require a token
     public_pages = {"Login"}
@@ -1950,6 +2328,9 @@ def main():
     elif page == "Topic Trends":
         require_auth()
         page_topic_trends()
+    elif page == "Search":
+        require_auth()
+        page_search()
     elif page == "Profile":
         require_auth()
         page_profile()
@@ -1962,6 +2343,9 @@ def main():
     elif page == "Study Plan":
         require_auth()
         page_study_plan()
+    elif page == "_qhist_modal":
+        require_auth()
+        _render_qhist_modal()
 
 
 if __name__ == "__main__":

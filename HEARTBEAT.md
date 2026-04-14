@@ -8,44 +8,54 @@
 - `paused`: Stop heartbeat until Jackson re-enables.
 - `active`: Running every 20m.
 
-## Status: ACTIVE — TASK 35 PENDING
+## Status: ACTIVE — TASK 38 READY
 
-TASK 34 (Study Calendar + Upcoming Reviews) is **complete** as of 2026-04-11 15:16 JST.
+TASK 37 (Flagged Questions Review Queue) is **complete** as of 2026-04-11 16:57 JST.
 
 ---
 
-## TASK 34: Session History + Performance Insights — ✅ COMPLETE (14:53 JST 2026-04-11)
+## TASK 36: Weak Zone Deep Dive + Question History Review — ✅ COMPLETE (16:07 JST 2026-04-11)
 
-- **`GET /api/study/history/{user_id}?limit=50`** — UNION query over exam_sessions (type=exam), study_sessions (type=focus joined with exam_answers), and study_sessions (type=review joined with review_logs). Returns session_id, type, date, score_pct, correct_count, total_count, duration_minutes. Sorted by date DESC. Duration computed from answer timestamps.
-- **`GET /api/study/recommendations/{user_id}`** — up to 3 recommendations: lowest-accuracy topic (HIGH), stale 7+ day topic (MEDIUM), at-risk streak with no due reviews (HIGH). Falls back to generic prompts when history thin.
-- **Streamlit `page_history()`** — sidebar 🕐 icon. Filter tabs (All/Exam/Focus/Review), limit selector (10/25/50), session timeline with score bar + pass/fail. Recommendations section with priority cards + navigation buttons.
-- Backend restarted PID 38412 on :8000. Streamlit restarted PID 38738 on :8501. Smoke test passed.
+- **`question_flags` table** added to database.py (user_id, question_id, flagged_at, UNIQUE). `CURRENT_TIMESTAMP` as SQLite-compatible default.
+- **`GET /api/study/topic/{topic_id}/question-history/{user_id}`** — returns all questions user has seen in a topic, merged from exam_answers + review_logs. Shows question_id, question_text, difficulty, best_score, attempt_count, times_correct, times_incorrect, last_attempted, last_result. Exam data takes precedence when both sources have the same question. Backend restarted (PID 44757 on :8000). Smoke test: topic 1 → 1 question (tp-027, 9 attempts, 80% best score); topic 2 → 1 question (tp-033, 7 attempts, 66.7% best score) ✅.
+- **`POST /api/study/questions/{question_id}/flag`** — `FlagRequest` model (user_id: str). Toggle INSERT/DELETE on question_flags. Returns `{"flagged": true|false}`. FlagRequest Pydantic model added to main.py. Smoke test: tp-027 toggle ON ✅, check ✅, toggle OFF ✅, check ✅.
+- **`GET /api/study/questions/{question_id}/flag`** — returns `{"flagged": true|false}`.
+- **Streamlit flag toggle**: added to both Study Session (question loop) and Focus Mode (focus loop) after the explanation expander. Calls flag endpoint on toggle, reruns to update button label. Button: "☆ Flag for Exam" / "⭐ Flagged — Unflag".
+- **"📋 View Question History →" button** on Topic Trends page (col1, per topic row). Sets `qhist_topic_id` in session_state and navigates to `_qhist_modal` pseudo-page.
+- **`_render_qhist_modal()`** function: shows topic name as title, fetches question-history endpoint, renders each question as expandable row with difficulty badge, Attempts/Last/Best columns, ✅/❌ counts, and flag toggle button. "← Back to Topic Trends" button returns.
+- Streamlit restarted (PID 44970 on :8501). Syntax check passed. All backend endpoints smoke-tested ✅. README.md updated with new sections: Question History drill-down, Flag for Exam.
 - No blockers.
 
 ---
 
-## TASK 34: Study Calendar + Upcoming Reviews — ✅ COMPLETE (15:16 JST 2026-04-11)
+## TASK 37: Flagged Questions Review Queue — ✅ COMPLETE (16:57 JST 2026-04-11)
 
-- **`GET /api/study/calendar/{user_id}`** — `past_weeks` (28 days: date/had_activity/sessions_count/questions_answered), `upcoming` (14 days: date/due_count), `total_due_today`. Demo user: 8 due today, active 4 days confirmed.
-- **`GET /api/study/topics/{user_id}/due-breakdown`** — per-topic due counts today (topic_id, topic_name, due_count) via user_progress→questions→topics join. Fixed bug: `up.topic_id` column doesn't exist, corrected to join via questions.
-- **`page_study_plan()`** (📅 icon, 8th sidebar page): Activity Calendar heatmap (4wk × 7d, green ●/grey ○), Upcoming bar chart (Plotly, today=red), Today's Focus topic list with "Start Review →" buttons.
-- Backend restarted PID 40244 on :8000. Streamlit restarted PID 40524 on :8501. Smoke tests: calendar → ✅, due-breakdown → ✅.
+- **`GET /api/study/flags/{user_id}`** confirmed working: returns question_id, question_text, difficulty, topic_name, flagged_at sorted by flagged_at DESC. Backend was stale (running PID 44779 without the endpoint) — restarted to PID 48582 ✅.
+- **`POST /api/study/solo/{question_id}`** added — grades a single question in isolation. Accepts `user_id` + `quality` (0–5), writes review_log + upserts user_progress via SM-2, returns full result dict. Bug fixed: `conn.execute()` args must be tuple not positional.
+- **`page_flagged()` enhanced**: "Study This Question →" button now sets `study_focus_question_id` session_state and navigates to Study Session with fresh setup.
+- **Solo study flow**: Study Session setup phase detects focus question → fetches via `GET /api/questions/{question_id}` → loads as single-item session → skips to question phase. "Finish Session" grades inline via `POST /api/study/solo/{question_id}` → shows `solo_results` phase with SM-2 delta display, achievements, sound, share block.
+- README.md updated with 📌 Flagged Questions Review Queue section. MEMORY.md updated. Streamlit PID 48616, Backend PID 48582.
 - No blockers.
 
 ---
 
-## TASK 35: Enhanced Search + Filter System
+## TASK 38: Onboarding Wizard / First-Time User Experience
 
 **Priority**: Medium
-**Description**: Add a topic-browser search feature and a question-filtering system so users can quickly find specific questions by keyword, topic, or difficulty. Also add a "Bookmark" capability to save favourite questions for later review.
+**Description**: Improve the first-time user experience with an optional guided onboarding flow that walks new users through the app's core features after registration, rather than dropping them straight onto the (empty) dashboard.
 
 **Steps**:
-1. **Backend**: `GET /api/study/bookmarks/{user_id}` — returns list of bookmarked question IDs for the user. `POST /api/study/bookmarks/{user_id}` with `{question_id}` to add a bookmark. `DELETE /api/study/bookmarks/{user_id}/{question_id}` to remove.
-2. **Backend**: `GET /api/study/search?user_id=&q=&topic_id=&difficulty=` — search questions by text (ILIKE on question_text and explanation) and/or topic_id and/or difficulty. Returns question_id, topic_name, question_text, difficulty. Max 50 results.
-3. **Streamlit**: New `page_search()` in sidebar (🔍 icon). Search bar at top with optional topic dropdown filter and difficulty radio (Any/Hard/Medium/Easy). Results shown as expandable cards with question text, topic badge, difficulty tag, and "Bookmark ★" / "Unbookmark ☆" toggle button. Bookmarked questions shown in a "Saved Questions" tab at the top.
-4. **Bookmarks tab** shows all saved questions with the same card layout — has "Start Study Session with this Q →" button and "Remove" button.
-5. Smoke test: search returns filtered results, bookmarks CRUD works, Streamlit renders correctly.
+1. **Backend**: No new endpoints needed.
+2. **Streamlit `page_onboarding()`**: A full-screen onboarding wizard (3–4 steps) shown once after registration:
+   - Step 1: "Welcome to TradePass!" — display name, quick value prop, "Next →"
+   - Step 2: "Try your first Study Session" — explains SM-2 spaced repetition in 2 sentences, "Start Now →" button that pre-configures and launches Study Session with 5 new questions
+   - Step 3: "Check your Progress" — launch Dashboard
+   - Step 4: "You're ready!" — launch Dashboard
+3. After completing or skipping, set `st.session_state["onboarding_done"] = True` and store in `st.query_params` so it's not shown again on refresh.
+4. On login, check `onboarding_done` in session_state — if False or missing, redirect to onboarding page before Dashboard.
+5. Smoke test: new registration → onboarding shown → complete → dashboard.
 6. Update README.md.
 7. Update MEMORY.md.
+8. Update HEARTBEAT.md with next task.
 
-*Updated: 2026-04-11 15:16 JST*
+*Updated: 2026-04-11 16:57 JST*

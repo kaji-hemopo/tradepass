@@ -30,6 +30,9 @@ from auth import hash_password, verify_password, create_access_token, decode_tok
 class DailyGoalRequest(BaseModel):
     goal: int = Field(..., ge=1, le=100, description="Daily question target (1–100)")
 
+class FlagRequest(BaseModel):
+    user_id: str
+
 from database import get_connection, init_db
 from sr import sm2_step, SM2Fields, grade_from_answer
 
@@ -4517,6 +4520,371 @@ def get_due_breakdown(user_id: str, _token: dict = Depends(get_current_user)):
         (user_id, today)
     ).fetchall()
     return {"topics": [dict(r) for r in rows]}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Bookmarks
+# ─────────────────────────────────────────────────────────────────────────────
+
+@app.get("/api/study/bookmarks/{user_id}")
+def get_bookmarks(user_id: str, _token: dict = Depends(get_current_user)):
+    """Return list of bookmarked question IDs for the user."""
+    conn = get_connection()
+    rows = conn.execute(
+        """
+        SELECT b.question_id, b.created_at,
+               q.question_text, q.difficulty, t.name AS topic_name
+        FROM bookmarks b
+        JOIN questions q ON q.id = b.question_id
+        JOIN topics t ON t.id = q.topic_id
+        WHERE b.user_id = ?
+        ORDER BY b.created_at DESC
+        """,
+        (user_id,)
+    ).fetchall()
+    conn.close()
+    return {"bookmarks": [dict(r) for r in rows]}
+
+
+@app.post("/api/study/bookmarks/{user_id}")
+def add_bookmark(user_id: str, payload: dict = Body(...), _token: dict = Depends(get_current_user)):
+    """Add a bookmark for a question."""
+    question_id = payload.get("question_id")
+    if not question_id:
+        raise HTTPException(status_code=400, detail="question_id is required")
+    conn = get_connection()
+    try:
+        conn.execute(
+            "INSERT OR IGNORE INTO bookmarks (user_id, question_id) VALUES (?, ?)",
+            (user_id, question_id)
+        )
+        conn.commit()
+    finally:
+        conn.close()
+    return {"added": True, "question_id": question_id}
+
+
+@app.delete("/api/study/bookmarks/{user_id}/{question_id}")
+def remove_bookmark(user_id: str, question_id: str, _token: dict = Depends(get_current_user)):
+    """Remove a bookmark."""
+    conn = get_connection()
+    conn.execute(
+        "DELETE FROM bookmarks WHERE user_id = ? AND question_id = ?",
+        (user_id, question_id)
+    )
+    conn.commit()
+    conn.close()
+    return {"removed": True}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Search
+# ─────────────────────────────────────────────────────────────────────────────
+
+@app.get("/api/study/search")
+def search_questions(
+    user_id: str = Query(...),
+    q: str = Query("", description="Search text"),
+    topic_id: int = Query(None),
+    difficulty: str = Query(None),
+    _token: dict = Depends(get_current_user)
+):
+    """Search questions by text, topic, and/or difficulty. Max 50 results."""
+    conn = get_connection()
+    conditions = ["q.is_active = 1"]
+    params = []
+
+    if q:
+        conditions.append("(q.question_text LIKE ? OR q.explanation LIKE ?)")
+        params.extend([f"%{q}%", f"%{q}%"])
+    if topic_id is not None:
+        conditions.append("q.topic_id = ?")
+        params.append(topic_id)
+    if difficulty:
+        conditions.append("q.difficulty = ?")
+        params.append(difficulty)
+
+    query = f"""
+        SELECT q.id AS question_id, t.name AS topic_name,
+               q.question_text, q.difficulty
+        FROM questions q
+        JOIN topics t ON t.id = q.topic_id
+        WHERE {" AND ".join(conditions)}
+        ORDER BY q.created_at DESC
+        LIMIT 50
+    """
+    rows = conn.execute(query, params).fetchall()
+    conn.close()
+    return {"results": [dict(r) for r in rows]}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Topic Question History
+# ─────────────────────────────────────────────────────────────────────────────
+
+@app.get("/api/study/topic/{topic_id}/question-history/{user_id}")
+def get_topic_question_history(
+    topic_id: int,
+    user_id: str,
+    _token: dict = Depends(get_current_user)
+):
+    """
+    Returns all questions from this topic that the user has seen,
+    with attempt stats per question.
+    """
+    conn = get_connection()
+
+    # Exam answers for this user/topic
+    exam_rows = conn.execute(
+        """
+        SELECT
+            q.id                                          AS question_id,
+            q.question_text,
+            q.difficulty,
+            COUNT(ea.id)                                 AS attempt_count,
+            SUM(ea.is_correct)                           AS times_correct,
+            COUNT(ea.id) - SUM(ea.is_correct)            AS times_incorrect,
+            MAX(ea.answered_at)                          AS last_attempted,
+            CASE WHEN SUM(ea.is_correct) > 0 THEN 'correct' ELSE 'incorrect' END
+                AS last_result,
+            ROUND(100.0 * SUM(ea.is_correct) / COUNT(ea.id), 1) AS best_score
+        FROM questions q
+        JOIN exam_answers ea ON ea.question_id = q.id
+        JOIN exam_sessions es ON es.id = ea.exam_session_id
+        WHERE q.topic_id = ? AND es.user_id = ? AND es.status = 'completed'
+        GROUP BY q.id
+        """,
+        (topic_id, user_id)
+    ).fetchall()
+
+    # Review logs for this user/topic
+    review_rows = conn.execute(
+        """
+        SELECT
+            q.id                                          AS question_id,
+            q.question_text,
+            q.difficulty,
+            COUNT(rl.id)                                 AS attempt_count,
+            SUM(CASE WHEN rl.quality >= 3 THEN 1 ELSE 0 END) AS times_correct,
+            SUM(CASE WHEN rl.quality < 3 THEN 1 ELSE 0 END) AS times_incorrect,
+            MAX(rl.reviewed_at)                         AS last_attempted,
+            CASE WHEN SUM(CASE WHEN rl.quality >= 3 THEN 1 ELSE 0 END) > 0
+                 THEN 'correct' ELSE 'incorrect' END      AS last_result,
+            ROUND(100.0 * SUM(CASE WHEN rl.quality >= 3 THEN 1 ELSE 0 END) / COUNT(rl.id), 1)
+                                                        AS best_score
+        FROM questions q
+        JOIN review_logs rl ON rl.question_id = q.id
+        WHERE q.topic_id = ? AND rl.user_id = ?
+        GROUP BY q.id
+        """,
+        (topic_id, user_id)
+    ).fetchall()
+
+    conn.close()
+
+    # Combine — deduplicate by question_id, exam data takes precedence
+    seen: dict = {}
+    for r in exam_rows:
+        seen[r["question_id"]] = dict(r)
+    for r in review_rows:
+        qid = r["question_id"]
+        if qid in seen:
+            # Merge: add attempt counts
+            ex = seen[qid]
+            ex["attempt_count"] = ex["attempt_count"] + r["attempt_count"]
+            ex["times_correct"] = ex["times_correct"] + r["times_correct"]
+            ex["times_incorrect"] = ex["times_incorrect"] + r["times_incorrect"]
+            if r["last_attempted"] > ex["last_attempted"]:
+                ex["last_attempted"] = r["last_attempted"]
+                ex["last_result"] = r["last_result"]
+        else:
+            seen[qid] = dict(r)
+
+    history = sorted(seen.values(), key=lambda x: x["last_attempted"] or "", reverse=True)
+    return {"topic_id": topic_id, "questions": history, "total": len(history)}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Question Flags (exam prep markers)
+# ─────────────────────────────────────────────────────────────────────────────
+
+@app.post("/api/study/questions/{question_id}/flag")
+def toggle_question_flag(
+    question_id: str,
+    body: FlagRequest,
+    _token: dict = Depends(get_current_user)
+):
+    """Toggle flag for a question (exam-prep marker)."""
+    user_id = body.user_id
+    conn = get_connection()
+    existing = conn.execute(
+        "SELECT id FROM question_flags WHERE user_id = ? AND question_id = ?",
+        (user_id, question_id)
+    ).fetchone()
+    if existing:
+        conn.execute("DELETE FROM question_flags WHERE user_id = ? AND question_id = ?",
+                     (user_id, question_id))
+        conn.commit()
+        conn.close()
+        return {"flagged": False}
+    else:
+        conn.execute(
+            "INSERT OR IGNORE INTO question_flags (user_id, question_id) VALUES (?, ?)",
+            (user_id, question_id)
+        )
+        conn.commit()
+        conn.close()
+        return {"flagged": True}
+
+
+@app.get("/api/study/questions/{question_id}/flag")
+def get_question_flag(
+    question_id: str,
+    user_id: str = Query(...),
+    _token: dict = Depends(get_current_user)
+):
+    """Check if a question is flagged for a user."""
+    conn = get_connection()
+    row = conn.execute(
+        "SELECT id FROM question_flags WHERE user_id = ? AND question_id = ?",
+        (user_id, question_id)
+    ).fetchone()
+    conn.close()
+    return {"flagged": row is not None}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Question Flags — List all flagged for a user
+# ─────────────────────────────────────────────────────────────────────────────
+
+@app.get("/api/study/flags/{user_id}")
+def get_flagged_questions(user_id: str, _token: dict = Depends(get_current_user)):
+    """Return all flagged exam-prep questions for a user, sorted by flagged_at DESC."""
+    conn = get_connection()
+    rows = conn.execute(
+        """
+        SELECT f.question_id, f.flagged_at,
+               q.question_text, q.difficulty, t.name AS topic_name
+        FROM question_flags f
+        JOIN questions q ON q.id = f.question_id
+        JOIN topics t ON t.id = q.topic_id
+        WHERE f.user_id = ?
+        ORDER BY f.flagged_at DESC
+        """,
+        (user_id,)
+    ).fetchall()
+    conn.close()
+    return {"flagged_questions": [dict(r) for r in rows]}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Solo Study — focus on one specific question
+# ─────────────────────────────────────────────────────────────────────────────
+
+class SoloStudyRequest(BaseModel):
+    user_id: str
+    quality: int = Field(..., ge=0, le=5)
+
+
+@app.post("/api/study/solo/{question_id}")
+def solo_study(
+    question_id: str,
+    body: SoloStudyRequest,
+    _token: dict = Depends(get_current_user),
+):
+    """
+    Grade a single question studied in isolation (solo exam-prep mode).
+    Returns the question data + SM-2 grade result for that one question.
+    """
+    uid = body.user_id
+    quality = body.quality
+
+    conn = get_connection()
+    # Fetch question details
+    q_row = conn.execute(
+        "SELECT q.*, t.name AS topic_name FROM questions q "
+        "JOIN topics t ON t.id = q.topic_id WHERE q.id = ?",
+        (question_id,)
+    ).fetchone()
+    if not q_row:
+        conn.close()
+        raise HTTPException(404, "Question not found")
+
+    q = _q_row(q_row)
+    topic_name = q.pop("topic_name", "")
+
+    # Get or create SM-2 progress row for this user/question
+    up_row = conn.execute(
+        "SELECT * FROM user_progress WHERE user_id = ? AND question_id = ?",
+        (uid, question_id),
+    ).fetchone()
+
+    if up_row:
+        up = dict(up_row)
+    else:
+        up = {
+            "id": str(uuid.uuid4()),
+            "user_id": uid,
+            "question_id": question_id,
+            "easiness_factor": 2.5,
+            "interval": 0,
+            "repetitions": 0,
+            "next_review_date": date.today().isoformat(),
+            "last_reviewed_at": None,
+            "total_reviews": 0,
+            "correct_count": 0,
+        }
+
+    sm2_fields = SM2Fields(
+        easiness_factor=up["easiness_factor"],
+        interval=up["interval"],
+        repetitions=up["repetitions"],
+    )
+    new_sm2 = sm2_step(sm2_fields, quality)
+
+    # Write review log
+    review_id = str(uuid.uuid4())
+    correct = 1 if quality >= 3 else 0
+    conn.execute(
+        """INSERT INTO review_logs
+        (id, user_id, question_id, quality, quality_numeric,
+         easiness_factor_before, easiness_factor_after,
+         interval_before, interval_after, reviewed_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))""",
+        (review_id, uid, question_id, quality, quality,
+         up["easiness_factor"], new_sm2.easiness_factor,
+         up["interval"], new_sm2.interval),
+    )
+
+    # Upsert user_progress
+    conn.execute(
+        """INSERT OR REPLACE INTO user_progress
+        (id, user_id, question_id, easiness_factor, interval, repetitions,
+         next_review_date, last_reviewed_at, total_reviews, correct_count)
+        VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'), ?, ?)""",
+        (up["id"], uid, question_id,
+         new_sm2.easiness_factor, new_sm2.interval, new_sm2.repetitions,
+         (date.today() + timedelta(days=new_sm2.interval)).isoformat(),
+         up["total_reviews"] + 1,
+         up["correct_count"] + correct),
+    )
+    conn.commit()
+    conn.close()
+
+    return {
+        "question_id": question_id,
+        "question_text": q.get("question_text"),
+        "topic_name": topic_name,
+        "difficulty": q.get("difficulty"),
+        "answer_text": q.get("answer_text"),
+        "explanation": q.get("explanation"),
+        "quality": quality,
+        "correct": correct == 1,
+        "easiness_factor_before": up["easiness_factor"],
+        "easiness_factor_after": new_sm2.easiness_factor,
+        "interval_before": up["interval"],
+        "interval_after": new_sm2.interval,
+    }
 
 
 # ─────────────────────────────────────────────────────────────────────────────

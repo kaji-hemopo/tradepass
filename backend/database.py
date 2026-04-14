@@ -183,6 +183,28 @@ def init_db():
         )
     """)
 
+    # Bookmarks
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS bookmarks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id TEXT NOT NULL,
+            question_id TEXT NOT NULL,
+            created_at TEXT NOT NULL DEFAULT (datetime('now')),
+            UNIQUE (user_id, question_id)
+        )
+    """)
+
+    # Question Flags (exam prep markers)
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS question_flags (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id TEXT NOT NULL,
+            question_id TEXT NOT NULL,
+            flagged_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE (user_id, question_id)
+        )
+    """)
+
     conn.commit()
     conn.close()
 
