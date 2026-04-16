@@ -8,7 +8,7 @@
   timeout = 60
 
 [deploy.startCommand]
-  command = "uvicorn main:app --host 0.0.0.0 --port $PORT"
+  command = "streamlit run app.py --server.port 8501 --server.address 0.0.0.0"
 
 [environment]
-  PYTHON_ENV = "production"
+  TRADEPASS_API_URL = "$TRADEPASS_API_URL"
