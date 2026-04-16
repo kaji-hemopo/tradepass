@@ -1,0 +1,14 @@
+[railway]
+  builder = "dockerfile"
+  dockerfile = "Dockerfile"
+
+[deploy]
+  numReplicas = 1
+  restart = true
+  timeout = 60
+
+[deploy.startCommand]
+  command = "uvicorn main:app --host 0.0.0.0 --port $PORT"
+
+[environment]
+  PYTHON_ENV = "production"
