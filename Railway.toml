@@ -3,8 +3,8 @@
   dockerfile = "Dockerfile"
 
 [deploy]
-  numReplicas = 1
-  restart = true
+  num_replicas = 1
+  restart = "yes"
   timeout = 60
 
 [deploy.startCommand]
