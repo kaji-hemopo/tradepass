@@ -260,6 +260,12 @@ def get_question(question_id: str):
 def _q_row(row) -> dict:
     d = dict(row)
     d["is_active"] = bool(d["is_active"])
+    # Parse options JSON string to list for frontend compatibility
+    if "options" in d and isinstance(d["options"], str):
+        try:
+            d["options"] = json.loads(d["options"])
+        except Exception:
+            d["options"] = []
     # Strip internal fields from response
     d.pop("updated_at", None)
     return d
@@ -3679,6 +3685,9 @@ def use_streak_freeze(user_id: str, _token: dict = Depends(get_current_user)):
     conn.close()
 
     return {"used": True, "tokens_remaining": new_tokens}
+
+
+@app.get("/api/study/achievements/{user_id}")
 def study_achievements(user_id: str, _token: dict = Depends(get_current_user)):
     """
     Returns all badge definitions with earned_at for earned badges,
